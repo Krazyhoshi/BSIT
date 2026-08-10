@@ -26,7 +26,7 @@
     >
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
         rel="stylesheet"
     >
 
@@ -41,102 +41,102 @@
 
 <body>
 
-    <!-- =====================================================
-         BACKGROUND
-    ====================================================== -->
+    <!-- BACKGROUND -->
 
-    <div class="bg-orb orb-one"></div>
-    <div class="bg-orb orb-two"></div>
-    <div class="bg-grid"></div>
+    <div class="background">
+        <div class="background-glow glow-one"></div>
+        <div class="background-glow glow-two"></div>
+        <div class="background-grid"></div>
+    </div>
 
 
-    <!-- =====================================================
-         NAVBAR
-    ====================================================== -->
+    <!-- NAVIGATION -->
 
-    <nav class="navbar">
+    <header class="navbar">
 
         <div class="nav-container">
 
-            <div class="brand">
+            <button
+                class="brand"
+                id="brandButton"
+                type="button"
+            >
 
-                <div
-                    class="brand-icon"
-                    aria-hidden="true"
-                >
+                <span class="brand-logo">
                     🎓
-                </div>
+                </span>
 
-                <div class="brand-text">
+                <span class="brand-copy">
 
                     <strong>
                         BSIT Student System
                     </strong>
 
-                    <span>
-                        Student Registration Portal
-                    </span>
+                    <small>
+                        Registration Portal
+                    </small>
 
-                </div>
+                </span>
 
-            </div>
+            </button>
 
 
-            <div
-                class="nav-links"
-                role="tablist"
-                aria-label="System navigation"
+            <nav
+                class="nav-tabs"
+                aria-label="Main navigation"
             >
 
                 <button
                     id="registerNav"
-                    class="nav-link active"
+                    class="nav-tab active"
                     type="button"
-                    role="tab"
-                    aria-selected="true"
                 >
-                    <span aria-hidden="true">📝</span>
-                    <span>Register</span>
+
+                    <span>📝</span>
+                    Register
+
                 </button>
 
 
                 <button
                     id="directoryNav"
-                    class="nav-link"
+                    class="nav-tab"
                     type="button"
-                    role="tab"
-                    aria-selected="false"
                 >
-                    <span aria-hidden="true">👥</span>
-                    <span>Directory</span>
+
+                    <span>👥</span>
+                    Directory
+
                 </button>
 
-            </div>
+            </nav>
 
         </div>
 
-    </nav>
+    </header>
 
 
-    <main id="mainContent">
+    <main>
 
-        <!-- =================================================
-             REGISTRATION
-        ================================================== -->
+        <!-- =====================================================
+             REGISTER
+        ====================================================== -->
 
         <section
             id="registrationSection"
             class="page-section active-section"
-            aria-hidden="false"
         >
 
             <div class="container">
 
                 <div class="hero">
 
-                    <div class="hero-badge">
-                        <span></span>
+                    <div class="status-badge">
+
+                        <span class="status-dot"></span>
+
                         BSIT STUDENT PORTAL
+
                     </div>
 
                     <h1>
@@ -158,16 +158,13 @@
                     novalidate
                 >
 
-                    <!-- PERSONAL -->
+                    <!-- PERSONAL INFORMATION -->
 
-                    <div class="form-section">
+                    <div class="form-card">
 
-                        <div class="section-heading">
+                        <div class="card-heading">
 
-                            <div
-                                class="section-icon"
-                                aria-hidden="true"
-                            >
+                            <div class="card-icon">
                                 👤
                             </div>
 
@@ -178,7 +175,7 @@
                                 </h2>
 
                                 <p>
-                                    Tell us about yourself.
+                                    Enter your basic personal details.
                                 </p>
 
                             </div>
@@ -191,7 +188,8 @@
                             <div class="form-group">
 
                                 <label for="firstName">
-                                    First Name <b>*</b>
+                                    First Name
+                                    <span>*</span>
                                 </label>
 
                                 <input
@@ -226,7 +224,8 @@
                             <div class="form-group">
 
                                 <label for="lastName">
-                                    Last Name <b>*</b>
+                                    Last Name
+                                    <span>*</span>
                                 </label>
 
                                 <input
@@ -297,7 +296,8 @@
                             <div class="form-group">
 
                                 <label for="gender">
-                                    Gender <b>*</b>
+                                    Gender
+                                    <span>*</span>
                                 </label>
 
                                 <select
@@ -329,7 +329,8 @@
                             <div class="form-group">
 
                                 <label for="birthday">
-                                    Birthday <b>*</b>
+                                    Birthday
+                                    <span>*</span>
                                 </label>
 
                                 <input
@@ -347,14 +348,11 @@
 
                     <!-- CONTACT -->
 
-                    <div class="form-section">
+                    <div class="form-card">
 
-                        <div class="section-heading">
+                        <div class="card-heading">
 
-                            <div
-                                class="section-icon"
-                                aria-hidden="true"
-                            >
+                            <div class="card-icon">
                                 📱
                             </div>
 
@@ -365,7 +363,7 @@
                                 </h2>
 
                                 <p>
-                                    How can we reach you?
+                                    Add your contact details.
                                 </p>
 
                             </div>
@@ -378,7 +376,8 @@
                             <div class="form-group">
 
                                 <label for="email">
-                                    Gmail Address <b>*</b>
+                                    Gmail Address
+                                    <span>*</span>
                                 </label>
 
                                 <input
@@ -400,7 +399,8 @@
                             <div class="form-group">
 
                                 <label for="contactNumber">
-                                    Contact Number <b>*</b>
+                                    Contact Number
+                                    <span>*</span>
                                 </label>
 
                                 <input
@@ -422,14 +422,11 @@
 
                     <!-- ACADEMIC -->
 
-                    <div class="form-section">
+                    <div class="form-card">
 
-                        <div class="section-heading">
+                        <div class="card-heading">
 
-                            <div
-                                class="section-icon"
-                                aria-hidden="true"
-                            >
+                            <div class="card-icon">
                                 🎓
                             </div>
 
@@ -440,7 +437,7 @@
                                 </h2>
 
                                 <p>
-                                    Your academic details.
+                                    Enter your academic details.
                                 </p>
 
                             </div>
@@ -453,7 +450,8 @@
                             <div class="form-group">
 
                                 <label for="course">
-                                    Course <b>*</b>
+                                    Course
+                                    <span>*</span>
                                 </label>
 
                                 <select
@@ -481,7 +479,8 @@
                             <div class="form-group">
 
                                 <label for="year">
-                                    Year Level <b>*</b>
+                                    Year Level
+                                    <span>*</span>
                                 </label>
 
                                 <select
@@ -522,9 +521,9 @@
                     </div>
 
 
-                    <!-- ACTION -->
+                    <!-- SUBMIT -->
 
-                    <div class="form-actions">
+                    <div class="form-submit">
 
                         <button
                             type="submit"
@@ -532,14 +531,15 @@
                             class="primary-button"
                         >
 
-                            <span id="submitText">
+                            <span
+                                id="submitText"
+                            >
                                 Register Student
                             </span>
 
                             <span
                                 id="loadingSpinner"
-                                class="loading-spinner"
-                                aria-hidden="true"
+                                class="button-spinner"
                             ></span>
 
                         </button>
@@ -553,24 +553,23 @@
         </section>
 
 
-        <!-- =================================================
+        <!-- =====================================================
              DIRECTORY
-        ================================================== -->
+        ====================================================== -->
 
         <section
             id="directorySection"
             class="page-section"
-            aria-hidden="true"
         >
 
             <div class="container">
 
-                <div class="directory-top">
+                <div class="directory-header">
 
                     <div>
 
-                        <div class="hero-badge">
-                            <span></span>
+                        <div class="status-badge">
+                            <span class="status-dot"></span>
                             STUDENT DIRECTORY
                         </div>
 
@@ -579,20 +578,20 @@
                         </h1>
 
                         <p>
-                            Browse registered students.
+                            Browse and search registered students.
                         </p>
 
                     </div>
 
 
-                    <div class="count-card">
+                    <div class="student-count">
 
                         <strong id="studentCount">
                             0
                         </strong>
 
                         <span>
-                            Showing Students
+                            Showing
                         </span>
 
                     </div>
@@ -602,7 +601,7 @@
 
                 <!-- STATS -->
 
-                <div class="directory-stats">
+                <div class="stats-grid">
 
                     <div class="stat-card">
 
@@ -645,7 +644,7 @@
                     <div class="stat-card">
 
                         <div class="stat-icon">
-                            📅
+                            🕒
                         </div>
 
                         <div>
@@ -663,20 +662,20 @@
                 </div>
 
 
-                <!-- SEARCH -->
+                <!-- DIRECTORY TOOLS -->
 
                 <div class="directory-tools">
 
                     <div class="search-box">
 
-                        <span aria-hidden="true">
+                        <span class="search-icon">
                             ⌕
                         </span>
 
                         <input
                             type="search"
                             id="searchInput"
-                            placeholder="Search name, Gmail, course, or contact..."
+                            placeholder="Search students..."
                             autocomplete="off"
                             aria-label="Search students"
                         >
@@ -695,7 +694,7 @@
                     <div class="sort-control">
 
                         <label for="sortSelect">
-                            Sort
+                            Sort by
                         </label>
 
                         <select id="sortSelect">
@@ -731,10 +730,7 @@
                         type="button"
                     >
 
-                        <span
-                            class="refresh-icon"
-                            aria-hidden="true"
-                        >
+                        <span class="refresh-icon">
                             ↻
                         </span>
 
@@ -747,11 +743,11 @@
 
                 <!-- SORT STATUS -->
 
-                <div class="sort-banner">
+                <div class="sort-status">
 
                     <div
-                        class="sort-icon"
                         id="sortIcon"
+                        class="sort-status-icon"
                     >
                         A–Z
                     </div>
@@ -771,7 +767,7 @@
                 </div>
 
 
-                <!-- GRID -->
+                <!-- STUDENT GRID -->
 
                 <div
                     id="studentsGrid"
@@ -783,7 +779,7 @@
                         class="directory-loading"
                     >
 
-                        <div class="loading-spinner active"></div>
+                        <span class="loading-ring"></span>
 
                         Loading students...
 
@@ -808,7 +804,7 @@
                     </h3>
 
                     <p>
-                        No students match your search.
+                        Try changing your search or sorting options.
                     </p>
 
                 </div>
@@ -852,7 +848,7 @@
             </div>
 
 
-            <div class="modal-badge">
+            <div class="success-label">
                 SUCCESS
             </div>
 
@@ -863,14 +859,17 @@
 
 
             <p>
+
                 <strong id="registeredStudentName"></strong>
+
                 has been successfully registered.
+
             </p>
 
 
             <button
                 id="modalDirectoryButton"
-                class="primary-button"
+                class="primary-button modal-button"
                 type="button"
             >
                 View Directory
@@ -924,7 +923,10 @@
     </div>
 
 
+    <!-- KEEP YOUR EXISTING CONFIG -->
+
     <script src="js/config.js"></script>
+
     <script src="js/students.js"></script>
 
 </body>

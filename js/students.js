@@ -1,8 +1,10 @@
 let students = [];
 let filteredStudents = [];
 
-let currentSort = "name-asc";
+let directoryLoaded = false;
 let isSwitchingSection = false;
+
+let currentSection = "register";
 
 
 // =========================================================
@@ -33,6 +35,9 @@ const registerNav =
 const directoryNav =
     document.getElementById("directoryNav");
 
+const brandButton =
+    document.getElementById("brandButton");
+
 const studentsGrid =
     document.getElementById("studentsGrid");
 
@@ -60,9 +65,6 @@ const searchInput =
 const clearSearch =
     document.getElementById("clearSearch");
 
-const refreshButton =
-    document.getElementById("refreshButton");
-
 const sortSelect =
     document.getElementById("sortSelect");
 
@@ -74,6 +76,9 @@ const sortTitle =
 
 const sortDescription =
     document.getElementById("sortDescription");
+
+const refreshButton =
+    document.getElementById("refreshButton");
 
 const successModal =
     document.getElementById("successModal");
@@ -107,29 +112,23 @@ const toastClose =
 // INITIALIZE
 // =========================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-        setupNavigation();
+    setupNavigation();
 
-        setupRegistrationForm();
+    setupRegistrationForm();
 
-        setupDirectoryControls();
+    setupDirectoryControls();
 
-        setupModal();
+    setupModal();
 
-        setupExtensionCheckboxes();
+    setupExtensionCheckboxes();
 
-        updateSortBanner();
+    setupInputFormatting();
 
-        showSection(
-            "register",
-            false
-        );
+    showSection("register", false);
 
-    }
-);
+});
 
 
 // =========================================================
@@ -138,165 +137,116 @@ document.addEventListener(
 
 function setupNavigation() {
 
-    registerNav.addEventListener(
-        "click",
-        () => {
+    registerNav.addEventListener("click", () => {
 
-            showSection("register");
+        showSection("register");
 
-        }
-    );
+    });
 
 
-    directoryNav.addEventListener(
-        "click",
-        () => {
+    directoryNav.addEventListener("click", () => {
 
-            showSection("directory");
+        showSection("directory");
 
-        }
-    );
+    });
+
+
+    brandButton.addEventListener("click", () => {
+
+        showSection("register");
+
+    });
 
 }
 
 
-// =========================================================
-// SECTION SWITCHING
-// =========================================================
-
-function showSection(
+async function showSection(
     section,
     shouldScroll = true
 ) {
+
+    if (section === currentSection) {
+
+        if (
+            section === "directory" &&
+            !directoryLoaded
+        ) {
+
+            await loadStudents();
+
+        }
+
+        return;
+
+    }
+
 
     if (isSwitchingSection) {
         return;
     }
 
 
-    const targetSection =
-        section === "directory"
-            ? directorySection
-            : registrationSection;
+    isSwitchingSection = true;
 
-    const otherSection =
-        section === "directory"
+
+    const oldSection =
+        currentSection === "register"
             ? registrationSection
             : directorySection;
 
 
-    if (
-        targetSection.classList.contains(
-            "active-section"
-        )
-    ) {
-
-        if (
-            section === "directory" &&
-            shouldScroll
-        ) {
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
-
-        }
-
-        return;
-
-    }
-
-
-    isSwitchingSection = true;
-
-
-    // -----------------------------------------
-    // NAV ACTIVE STATE
-    // -----------------------------------------
-
-    registerNav.classList.toggle(
-        "active",
+    const newSection =
         section === "register"
+            ? registrationSection
+            : directorySection;
+
+
+    updateNavigation(section);
+
+
+    oldSection.classList.remove(
+        "section-enter"
     );
 
-    directoryNav.classList.toggle(
-        "active",
-        section === "directory"
-    );
-
-
-    registerNav.setAttribute(
-        "aria-selected",
-        String(section === "register")
-    );
-
-    directoryNav.setAttribute(
-        "aria-selected",
-        String(section === "directory")
+    oldSection.classList.add(
+        "section-exit"
     );
 
 
-    // -----------------------------------------
-    // PREPARE TARGET
-    // -----------------------------------------
+    await wait(180);
 
-    targetSection.classList.add(
+
+    oldSection.classList.remove(
+        "active-section",
+        "section-exit"
+    );
+
+
+    newSection.classList.add(
         "active-section"
     );
 
-    targetSection.classList.remove(
+
+    void newSection.offsetWidth;
+
+
+    newSection.classList.add(
         "section-enter"
     );
 
 
-    // Force browser to notice removal
-    // before starting animation again.
+    currentSection = section;
 
-    void targetSection.offsetWidth;
-
-
-    targetSection.classList.add(
-        "section-enter"
-    );
-
-
-    targetSection.setAttribute(
-        "aria-hidden",
-        "false"
-    );
-
-
-    otherSection.classList.remove(
-        "active-section"
-    );
-
-    otherSection.classList.remove(
-        "section-enter"
-    );
-
-    otherSection.setAttribute(
-        "aria-hidden",
-        "true"
-    );
-
-
-    // -----------------------------------------
-    // DIRECTORY LOAD
-    // -----------------------------------------
 
     if (
-        section === "directory"
+        section === "directory" &&
+        !directoryLoaded
     ) {
 
-        loadStudents();
+        await loadStudents();
 
     }
 
-
-    // -----------------------------------------
-    // SCROLL
-    // -----------------------------------------
 
     if (shouldScroll) {
 
@@ -308,22 +258,61 @@ function showSection(
     }
 
 
-    // -----------------------------------------
-    // FINISH
-    // -----------------------------------------
+    await wait(320);
 
-    setTimeout(
-        () => {
 
-            targetSection.classList.remove(
-                "section-enter"
-            );
-
-            isSwitchingSection = false;
-
-        },
-        450
+    newSection.classList.remove(
+        "section-enter"
     );
+
+
+    isSwitchingSection = false;
+
+}
+
+
+function updateNavigation(section) {
+
+    const registerActive =
+        section === "register";
+
+    registerNav.classList.toggle(
+        "active",
+        registerActive
+    );
+
+    directoryNav.classList.toggle(
+        "active",
+        !registerActive
+    );
+
+    registerNav.setAttribute(
+        "aria-current",
+        registerActive
+            ? "page"
+            : "false"
+    );
+
+    directoryNav.setAttribute(
+        "aria-current",
+        !registerActive
+            ? "page"
+            : "false"
+    );
+
+}
+
+
+function wait(milliseconds) {
+
+    return new Promise(resolve => {
+
+        setTimeout(
+            resolve,
+            milliseconds
+        );
+
+    });
 
 }
 
@@ -349,7 +338,34 @@ function setupRegistrationForm() {
 
 
 // =========================================================
-// EXTENSIONS
+// INPUT FORMATTING
+// =========================================================
+
+function setupInputFormatting() {
+
+    const contactInput =
+        document.getElementById(
+            "contactNumber"
+        );
+
+
+    contactInput.addEventListener(
+        "input",
+        () => {
+
+            contactInput.value =
+                contactInput.value
+                    .replace(/\D/g, "")
+                    .slice(0, 11);
+
+        }
+    );
+
+}
+
+
+// =========================================================
+// EXTENSION
 // =========================================================
 
 function setupExtensionCheckboxes() {
@@ -362,55 +378,49 @@ function setupExtensionCheckboxes() {
     ];
 
 
-    ids.forEach(
-        id => {
+    ids.forEach(id => {
 
-            const checkbox =
-                document.getElementById(id);
-
-
-            if (!checkbox) {
-                return;
-            }
+        const checkbox =
+            document.getElementById(id);
 
 
-            checkbox.addEventListener(
-                "change",
-                () => {
+        if (!checkbox) {
+            return;
+        }
 
-                    if (!checkbox.checked) {
+
+        checkbox.addEventListener(
+            "change",
+            () => {
+
+                if (!checkbox.checked) {
+                    return;
+                }
+
+
+                ids.forEach(otherId => {
+
+                    if (otherId === id) {
                         return;
                     }
 
 
-                    ids.forEach(
-                        otherId => {
-
-                            if (
-                                otherId === id
-                            ) {
-                                return;
-                            }
+                    const other =
+                        document.getElementById(
+                            otherId
+                        );
 
 
-                            const other =
-                                document.getElementById(
-                                    otherId
-                                );
+                    if (other) {
+                        other.checked = false;
+                    }
 
+                });
 
-                            if (other) {
-                                other.checked = false;
-                            }
+            }
+        );
 
-                        }
-                    );
-
-                }
-            );
-
-        }
-    );
+    });
 
 }
 
@@ -431,14 +441,20 @@ function getNameExtension() {
             document.getElementById(id);
 
 
-        if (checkbox?.checked) {
+        if (
+            checkbox &&
+            checkbox.checked
+        ) {
+
             return checkbox.value;
+
         }
 
     }
 
 
     return "";
+
 }
 
 
@@ -449,19 +465,17 @@ function resetExtensionCheckboxes() {
         "srExtension",
         "iiExtension",
         "iiiExtension"
-    ].forEach(
-        id => {
+    ].forEach(id => {
 
-            const checkbox =
-                document.getElementById(id);
+        const checkbox =
+            document.getElementById(id);
 
 
-            if (checkbox) {
-                checkbox.checked = false;
-            }
-
+        if (checkbox) {
+            checkbox.checked = false;
         }
-    );
+
+    });
 
 }
 
@@ -473,65 +487,57 @@ function resetExtensionCheckboxes() {
 async function registerStudent() {
 
     const firstName =
-        document
-            .getElementById("firstName")
-            .value
-            .trim();
+        document.getElementById(
+            "firstName"
+        ).value.trim();
 
 
     const middleName =
-        document
-            .getElementById("middleName")
-            .value
-            .trim();
+        document.getElementById(
+            "middleName"
+        ).value.trim();
 
 
     const lastName =
-        document
-            .getElementById("lastName")
-            .value
-            .trim();
+        document.getElementById(
+            "lastName"
+        ).value.trim();
 
 
     const gender =
-        document
-            .getElementById("gender")
-            .value
-            .trim();
+        document.getElementById(
+            "gender"
+        ).value;
 
 
     const birthday =
-        document
-            .getElementById("birthday")
-            .value
-            .trim();
+        document.getElementById(
+            "birthday"
+        ).value;
 
 
     const course =
-        document
-            .getElementById("course")
-            .value;
+        document.getElementById(
+            "course"
+        ).value;
 
 
     const year =
-        document
-            .getElementById("year")
-            .value
-            .trim();
+        document.getElementById(
+            "year"
+        ).value;
 
 
     const contactNumber =
-        document
-            .getElementById("contactNumber")
-            .value
-            .trim();
+        document.getElementById(
+            "contactNumber"
+        ).value.trim();
 
 
     const email =
-        document
-            .getElementById("email")
-            .value
-            .trim();
+        document.getElementById(
+            "email"
+        ).value.trim();
 
 
     const extension =
@@ -652,6 +658,34 @@ async function registerStudent() {
         }
 
 
+        // =================================================
+        // UPDATE LOCAL DATA SAFELY
+        // =================================================
+
+        if (data) {
+
+            const existingIndex =
+                students.findIndex(
+                    student =>
+                        student.id === data.id
+                );
+
+
+            if (existingIndex >= 0) {
+
+                students[
+                    existingIndex
+                ] = data;
+
+            } else {
+
+                students.push(data);
+
+            }
+
+        }
+
+
         registeredStudentName.textContent =
             buildFullName(data);
 
@@ -664,12 +698,10 @@ async function registerStudent() {
         resetExtensionCheckboxes();
 
 
-        // Add the newly registered student
-        // to the local list.
+        // Re-render only if directory
+        // has already been loaded.
 
-        if (data) {
-
-            students.push(data);
+        if (directoryLoaded) {
 
             applyFiltersAndSort();
 
@@ -680,7 +712,10 @@ async function registerStudent() {
 
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Registration error:",
+            error
+        );
 
 
         showToast(
@@ -705,7 +740,9 @@ async function registerStudent() {
 // SUBMIT LOADING
 // =========================================================
 
-function setSubmitLoading(loading) {
+function setSubmitLoading(
+    loading
+) {
 
     submitButton.disabled =
         loading;
@@ -764,7 +801,8 @@ async function loadStudents() {
                 : [];
 
 
-        updateDirectoryStats();
+        directoryLoaded = true;
+
 
         applyFiltersAndSort();
 
@@ -773,12 +811,17 @@ async function loadStudents() {
 
     catch (error) {
 
-        console.error(error);
+        console.error(
+            "Directory loading error:",
+            error
+        );
 
 
         students = [];
 
         filteredStudents = [];
+
+        directoryLoaded = false;
 
 
         hideDirectoryLoading();
@@ -792,16 +835,25 @@ async function loadStudents() {
         );
 
 
-        emptyState
-            .querySelector("h3")
-            .textContent =
-                "Unable to load students";
+        const title =
+            emptyState.querySelector(
+                "h3"
+            );
+
+        const description =
+            emptyState.querySelector(
+                "p"
+            );
 
 
-        emptyState
-            .querySelector("p")
-            .textContent =
-                getSupabaseErrorMessage(error);
+        title.textContent =
+            "Unable to load students";
+
+
+        description.textContent =
+            getSupabaseErrorMessage(
+                error
+            );
 
 
         updateStudentCount();
@@ -884,10 +936,7 @@ function setupDirectoryControls() {
         "change",
         () => {
 
-            currentSort =
-                sortSelect.value;
-
-            updateSortBanner();
+            updateSortStatus();
 
             applyFiltersAndSort();
 
@@ -899,6 +948,17 @@ function setupDirectoryControls() {
         "click",
         async () => {
 
+            if (
+                refreshButton.classList.contains(
+                    "refreshing"
+                )
+            ) {
+
+                return;
+
+            }
+
+
             refreshButton.classList.add(
                 "refreshing"
             );
@@ -907,40 +967,31 @@ function setupDirectoryControls() {
             await loadStudents();
 
 
-            setTimeout(
-                () => {
+            setTimeout(() => {
 
-                    refreshButton.classList.remove(
-                        "refreshing"
-                    );
+                refreshButton.classList.remove(
+                    "refreshing"
+                );
 
-                },
-                300
-            );
+            }, 250);
 
         }
     );
+
+
+    updateSortStatus();
 
 }
 
 
 function updateSearchButton() {
 
-    if (
-        searchInput.value.trim()
-    ) {
-
-        clearSearch.classList.add(
-            "visible"
-        );
-
-    } else {
-
-        clearSearch.classList.remove(
-            "visible"
-        );
-
-    }
+    clearSearch.classList.toggle(
+        "visible",
+        Boolean(
+            searchInput.value.trim()
+        )
+    );
 
 }
 
@@ -995,19 +1046,30 @@ function applyFiltersAndSort() {
 
 
                 return (
-                    fullName.includes(search) ||
-                    email.includes(search) ||
-                    course.includes(search) ||
-                    contact.includes(search) ||
-                    year.includes(search)
+                    fullName.includes(
+                        search
+                    ) ||
+                    email.includes(
+                        search
+                    ) ||
+                    course.includes(
+                        search
+                    ) ||
+                    contact.includes(
+                        search
+                    ) ||
+                    year.includes(
+                        search
+                    )
                 );
 
             }
         );
 
 
-    filteredStudents.sort(
-        compareStudents
+    sortStudents(
+        filteredStudents,
+        sortSelect.value
     );
 
 
@@ -1017,123 +1079,80 @@ function applyFiltersAndSort() {
 
 
 // =========================================================
-// SORTING
+// SORT
 // =========================================================
 
-function compareStudents(a, b) {
+function sortStudents(
+    list,
+    sortType
+) {
 
-    switch (currentSort) {
+    list.sort(
+        (a, b) => {
 
-        case "name-desc":
+            switch (sortType) {
 
-            return (
-                compareStudentNames(
-                    b,
-                    a
-                )
-            );
+                case "name-desc":
 
-
-        case "newest":
-
-            return (
-                getTimestamp(b) -
-                getTimestamp(a)
-            );
+                    return (
+                        compareStudentNames(
+                            b,
+                            a
+                        )
+                    );
 
 
-        case "oldest":
+                case "newest":
 
-            return (
-                getTimestamp(a) -
-                getTimestamp(b)
-            );
-
-
-        case "year-asc":
-
-            return (
-                getYearNumber(a.year) -
-                getYearNumber(b.year)
-            ) ||
-            compareStudentNames(a, b);
+                    return (
+                        getTimestamp(b) -
+                        getTimestamp(a)
+                    );
 
 
-        case "name-asc":
-        default:
+                case "oldest":
 
-            return compareStudentNames(
-                a,
-                b
-            );
-
-    }
-
-}
+                    return (
+                        getTimestamp(a) -
+                        getTimestamp(b)
+                    );
 
 
-function getTimestamp(student) {
+                case "year-asc":
 
-    const value =
-        student.registered_at ||
-        student.created_at ||
-        student.inserted_at;
-
-
-    if (!value) {
-        return 0;
-    }
-
-
-    const timestamp =
-        new Date(value).getTime();
+                    return (
+                        getYearNumber(a.year) -
+                        getYearNumber(b.year)
+                    ) ||
+                    compareStudentNames(
+                        a,
+                        b
+                    );
 
 
-    return Number.isNaN(timestamp)
-        ? 0
-        : timestamp;
+                case "name-asc":
+
+                default:
+
+                    return (
+                        compareStudentNames(
+                            a,
+                            b
+                        )
+                    );
+
+            }
+
+        }
+    );
 
 }
 
 
-function getYearNumber(year) {
-
-    const value =
-        String(year || "")
-            .toLowerCase();
-
-
-    if (
-        value.includes("1st")
-    ) {
-        return 1;
-    }
-
-    if (
-        value.includes("2nd")
-    ) {
-        return 2;
-    }
-
-    if (
-        value.includes("3rd")
-    ) {
-        return 3;
-    }
-
-    if (
-        value.includes("4th")
-    ) {
-        return 4;
-    }
-
-
-    return 99;
-
-}
-
-
-function compareStudentNames(a, b) {
+function compareStudentNames(
+    a,
+    b
+) {
 
     let result =
         compareNamePart(
@@ -1179,15 +1198,16 @@ function compareStudentNames(a, b) {
 }
 
 
-function compareNamePart(a, b) {
+function compareNamePart(
+    a,
+    b
+) {
 
     return String(a || "")
         .trim()
-        .toLowerCase()
         .localeCompare(
             String(b || "")
-                .trim()
-                .toLowerCase(),
+                .trim(),
             undefined,
             {
                 sensitivity: "base"
@@ -1197,73 +1217,179 @@ function compareNamePart(a, b) {
 }
 
 
-// =========================================================
-// SORT BANNER
-// =========================================================
+function getYearNumber(
+    year
+) {
 
-function updateSortBanner() {
-
-    const settings = {
-
-        "name-asc": {
-            icon: "A–Z",
-            title: "Alphabetical order",
-            description:
-                "Last Name → First Name → Extension → Middle Name"
-        },
-
-        "name-desc": {
-            icon: "Z–A",
-            title: "Reverse alphabetical order",
-            description:
-                "Students are shown from Z to A."
-        },
-
-        "newest": {
-            icon: "NEW",
-            title: "Newest registrations",
-            description:
-                "Most recently registered students appear first."
-        },
-
-        "oldest": {
-            icon: "OLD",
-            title: "Oldest registrations",
-            description:
-                "Earliest registered students appear first."
-        },
-
-        "year-asc": {
-            icon: "YEAR",
-            title: "Year level",
-            description:
-                "1st Year → 2nd Year → 3rd Year → 4th Year"
-        }
-
-    };
+    const value =
+        String(
+            year || ""
+        ).toLowerCase();
 
 
-    const selected =
-        settings[currentSort] ||
-        settings["name-asc"];
+    if (
+        value.includes("1st") ||
+        value.includes("first")
+    ) {
+        return 1;
+    }
 
 
-    sortIcon.textContent =
-        selected.icon;
+    if (
+        value.includes("2nd") ||
+        value.includes("second")
+    ) {
+        return 2;
+    }
 
 
-    sortTitle.textContent =
-        selected.title;
+    if (
+        value.includes("3rd") ||
+        value.includes("third")
+    ) {
+        return 3;
+    }
 
 
-    sortDescription.textContent =
-        selected.description;
+    if (
+        value.includes("4th") ||
+        value.includes("fourth")
+    ) {
+        return 4;
+    }
+
+
+    return 999;
 
 }
 
 
 // =========================================================
-// RENDER STUDENTS
+// TIMESTAMP
+// =========================================================
+
+function getTimestamp(
+    student
+) {
+
+    const value =
+        student.registered_at ||
+        student.created_at ||
+        student.inserted_at;
+
+
+    if (!value) {
+        return 0;
+    }
+
+
+    const timestamp =
+        new Date(value).getTime();
+
+
+    return Number.isNaN(timestamp)
+        ? 0
+        : timestamp;
+
+}
+
+
+// =========================================================
+// SORT STATUS
+// =========================================================
+
+function updateSortStatus() {
+
+    const sortType =
+        sortSelect.value;
+
+
+    const statuses = {
+
+        "name-asc": {
+
+            icon: "A–Z",
+
+            title:
+                "Alphabetical order",
+
+            description:
+                "Last Name → First Name → Extension → Middle Name"
+
+        },
+
+        "name-desc": {
+
+            icon: "Z–A",
+
+            title:
+                "Reverse alphabetical order",
+
+            description:
+                "Students are shown from Z to A"
+
+        },
+
+        "newest": {
+
+            icon: "NEW",
+
+            title:
+                "Newest registrations",
+
+            description:
+                "Most recently registered students first"
+
+        },
+
+        "oldest": {
+
+            icon: "OLD",
+
+            title:
+                "Oldest registrations",
+
+            description:
+                "Earliest registered students first"
+
+        },
+
+        "year-asc": {
+
+            icon: "YR",
+
+            title:
+                "Year level",
+
+            description:
+                "1st Year → 2nd Year → 3rd Year → 4th Year"
+
+        }
+
+    };
+
+
+    const status =
+        statuses[sortType] ||
+        statuses["name-asc"];
+
+
+    sortIcon.textContent =
+        status.icon;
+
+
+    sortTitle.textContent =
+        status.title;
+
+
+    sortDescription.textContent =
+        status.description;
+
+}
+
+
+// =========================================================
+// RENDER
 // =========================================================
 
 function renderStudents() {
@@ -1275,6 +1401,8 @@ function renderStudents() {
 
 
     updateStudentCount();
+
+    updateDirectoryStats();
 
 
     if (!filteredStudents.length) {
@@ -1334,13 +1462,15 @@ function createStudentCard(
 
     card.style.animationDelay =
         `${Math.min(
-            index * 0.04,
-            0.4
+            index * 0.035,
+            0.3
         )}s`;
 
 
     const fullName =
-        buildFullName(student);
+        buildFullName(
+            student
+        );
 
 
     const initials =
@@ -1393,7 +1523,8 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.email || "N/A"
+                            student.email ||
+                            "N/A"
                         )}
                     </span>
 
@@ -1416,7 +1547,8 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.course || "N/A"
+                            student.course ||
+                            "N/A"
                         )}
                     </span>
 
@@ -1439,7 +1571,8 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.year || "N/A"
+                            student.year ||
+                            "N/A"
                         )}
                     </span>
 
@@ -1475,8 +1608,10 @@ function createStudentCard(
 
 
         <div class="registration-time">
+
             Registered:
             ${escapeHTML(registeredDate)}
+
         </div>
 
     `;
@@ -1488,94 +1623,17 @@ function createStudentCard(
 
 
 // =========================================================
-// DIRECTORY STATS
-// =========================================================
-
-function updateDirectoryStats() {
-
-    if (totalStudents) {
-
-        totalStudents.textContent =
-            students.length;
-
-    }
-
-
-    if (bsitStudents) {
-
-        bsitStudents.textContent =
-            students.filter(
-                student =>
-                    String(
-                        student.course || ""
-                    ).toUpperCase() ===
-                    "BSIT"
-            ).length;
-
-    }
-
-
-    if (
-        latestRegistration
-    ) {
-
-        const latest =
-            [...students]
-                .sort(
-                    (a, b) =>
-                        getTimestamp(b) -
-                        getTimestamp(a)
-                )[0];
-
-
-        latestRegistration.textContent =
-            latest
-                ? formatShortDate(
-                    getTimestamp(latest)
-                )
-                : "—";
-
-    }
-
-}
-
-
-function formatShortDate(timestamp) {
-
-    if (!timestamp) {
-        return "—";
-    }
-
-
-    const date =
-        new Date(timestamp);
-
-
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-        return "—";
-    }
-
-
-    return date.toLocaleDateString(
-        "en-PH",
-        {
-            month: "short",
-            day: "numeric"
-        }
-    );
-
-}
-
-
-// =========================================================
 // NAME
 // =========================================================
 
-function buildFullName(student) {
+function buildFullName(
+    student
+) {
+
+    if (!student) {
+        return "Unnamed Student";
+    }
+
 
     const lastName =
         String(
@@ -1614,7 +1672,11 @@ function buildFullName(student) {
         lastName &&
         rest
     ) {
-        return `${lastName}, ${rest}`;
+
+        return (
+            `${lastName}, ${rest}`
+        );
+
     }
 
 
@@ -1666,7 +1728,9 @@ function getInitials(
 // DATE
 // =========================================================
 
-function formatDate(value) {
+function formatDate(
+    value
+) {
 
     if (!value) {
         return "Unknown";
@@ -1682,18 +1746,26 @@ function formatDate(value) {
             date.getTime()
         )
     ) {
+
         return "Unknown";
+
     }
 
 
     return date.toLocaleString(
         "en-PH",
         {
+
             month: "short",
+
             day: "numeric",
+
             year: "numeric",
+
             hour: "numeric",
+
             minute: "2-digit"
+
         }
     );
 
@@ -1713,6 +1785,77 @@ function updateStudentCount() {
 
 
 // =========================================================
+// DIRECTORY STATS
+// =========================================================
+
+function updateDirectoryStats() {
+
+    totalStudents.textContent =
+        students.length;
+
+
+    bsitStudents.textContent =
+        students.filter(
+            student =>
+                String(
+                    student.course || ""
+                )
+                    .toUpperCase()
+                    === "BSIT"
+        ).length;
+
+
+    if (!students.length) {
+
+        latestRegistration.textContent =
+            "—";
+
+        return;
+
+    }
+
+
+    const latest =
+        [...students]
+            .sort(
+                (
+                    a,
+                    b
+                ) =>
+                    getTimestamp(b) -
+                    getTimestamp(a)
+            )[0];
+
+
+    const timestamp =
+        getTimestamp(latest);
+
+
+    if (!timestamp) {
+
+        latestRegistration.textContent =
+            "—";
+
+        return;
+
+    }
+
+
+    latestRegistration.textContent =
+        new Date(
+            timestamp
+        ).toLocaleDateString(
+            "en-PH",
+            {
+                month: "short",
+                day: "numeric"
+            }
+        );
+
+}
+
+
+// =========================================================
 // MODAL
 // =========================================================
 
@@ -1726,11 +1869,13 @@ function setupModal() {
 
     modalDirectoryButton.addEventListener(
         "click",
-        () => {
+        async () => {
 
             hideSuccessModal();
 
-            showSection(
+            await wait(120);
+
+            await showSection(
                 "directory"
             );
 
@@ -1832,9 +1977,7 @@ function showToast(
         message;
 
 
-    if (
-        type === "error"
-    ) {
+    if (type === "error") {
 
         toast.classList.add(
             "error"
@@ -1880,10 +2023,6 @@ function showToast(
 }
 
 
-// =========================================================
-// TOAST CLOSE
-// =========================================================
-
 toastClose.addEventListener(
     "click",
     () => {
@@ -1905,51 +2044,56 @@ function getSupabaseErrorMessage(
 ) {
 
     if (!error) {
-        return "Something went wrong.";
-    }
 
-
-    if (
-        error.code ===
-        "23505"
-    ) {
-
-        return "This student information already exists.";
+        return (
+            "Something went wrong."
+        );
 
     }
 
 
     if (
-        error.code ===
-        "42501"
-    ) {
-
-        return "Database permission denied. Check your Supabase RLS policies.";
-
-    }
-
-
-    if (
-        error.code ===
-        "PGRST204"
+        error.code === "23505"
     ) {
 
         return (
-            "A database column used by the system does not exist. " +
-            "Please check your Supabase table columns."
+            "This student information already exists."
+        );
+
+    }
+
+
+    if (
+        error.code === "42501"
+    ) {
+
+        return (
+            "Database permission denied. Check your Supabase RLS policies."
+        );
+
+    }
+
+
+    if (
+        error.code === "PGRST204"
+    ) {
+
+        return (
+            "A database column used by the system does not exist. Please check your Supabase table columns."
         );
 
     }
 
 
     if (error.message) {
+
         return error.message;
+
     }
 
 
     return (
-        "Something went wrong while " +
-        "communicating with Supabase."
+        "Something went wrong while communicating with Supabase."
     );
 
 }
@@ -1959,7 +2103,9 @@ function getSupabaseErrorMessage(
 // ESCAPE HTML
 // =========================================================
 
-function escapeHTML(value) {
+function escapeHTML(
+    value
+) {
 
     return String(
         value ?? ""
