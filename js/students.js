@@ -217,7 +217,7 @@ function setupRegistrationForm() {
 
 
 // =========================================================
-// GET EXTENSION
+// GET NAME EXTENSION
 // =========================================================
 
 function getNameExtension() {
@@ -229,18 +229,21 @@ function getNameExtension() {
         "iiiExtension"
     ];
 
+
     for (const id of extensions) {
 
         const checkbox =
             document.getElementById(id);
 
-        if (checkbox.checked) {
+
+        if (checkbox && checkbox.checked) {
 
             return checkbox.value;
 
         }
 
     }
+
 
     return "";
 
@@ -260,11 +263,18 @@ function setupExtensionCheckboxes() {
         "iiiExtension"
     ];
 
+
     extensions.forEach(
         (id) => {
 
             const checkbox =
                 document.getElementById(id);
+
+
+            if (!checkbox) {
+                return;
+            }
+
 
             checkbox.addEventListener(
                 "change",
@@ -277,9 +287,18 @@ function setupExtensionCheckboxes() {
 
                                 if (otherId !== id) {
 
-                                    document.getElementById(
-                                        otherId
-                                    ).checked = false;
+                                    const other =
+                                        document.getElementById(
+                                            otherId
+                                        );
+
+
+                                    if (other) {
+
+                                        other.checked =
+                                            false;
+
+                                    }
 
                                 }
 
@@ -309,11 +328,13 @@ async function registerStudent() {
             .value
             .trim();
 
+
     const middleName =
         document
             .getElementById("middleName")
             .value
             .trim();
+
 
     const lastName =
         document
@@ -321,8 +342,22 @@ async function registerStudent() {
             .value
             .trim();
 
-    const extension =
+
+    const extensionName =
         getNameExtension();
+
+
+    const gender =
+        document
+            .getElementById("gender")
+            .value;
+
+
+    const birthday =
+        document
+            .getElementById("birthday")
+            .value;
+
 
     const email =
         document
@@ -330,27 +365,39 @@ async function registerStudent() {
             .value
             .trim();
 
+
+    const contactNumber =
+        document
+            .getElementById("contactNumber")
+            .value
+            .trim();
+
+
     const course =
         document
             .getElementById("course")
             .value;
 
-    const yearLevel =
+
+    const year =
         document
-            .getElementById("yearLevel")
+            .getElementById("year")
             .value;
 
 
-    // -------------------------------------------------------
+    // =====================================================
     // BASIC VALIDATION
-    // -------------------------------------------------------
+    // =====================================================
 
     if (
         !firstName ||
         !lastName ||
+        !gender ||
+        !birthday ||
         !email ||
+        !contactNumber ||
         !course ||
-        !yearLevel
+        !year
     ) {
 
         showToast(
@@ -364,18 +411,94 @@ async function registerStudent() {
     }
 
 
-    // -------------------------------------------------------
-    // LOADING STATE
-    // -------------------------------------------------------
+    // =====================================================
+    // GMAIL VALIDATION
+    // =====================================================
+
+    const gmailPattern =
+        /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+
+    if (!gmailPattern.test(email)) {
+
+        showToast(
+            "Invalid Gmail",
+            "Please enter a valid Gmail address ending in @gmail.com.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // =====================================================
+    // CONTACT NUMBER VALIDATION
+    // =====================================================
+
+    const phonePattern =
+        /^09\d{9}$/;
+
+
+    if (!phonePattern.test(contactNumber)) {
+
+        showToast(
+            "Invalid Contact Number",
+            "Please enter an 11-digit Philippine number starting with 09.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // =====================================================
+    // LOADING
+    // =====================================================
 
     setSubmitLoading(true);
 
 
     try {
 
-        // ---------------------------------------------------
+        // =================================================
+        // CHECK DUPLICATE EMAIL
+        // =================================================
+
+        const {
+            data: existingEmail,
+            error: duplicateError
+        } = await supabaseClient
+            .from("students")
+            .select("email")
+            .eq("email", email)
+            .maybeSingle();
+
+
+        if (duplicateError) {
+
+            throw duplicateError;
+
+        }
+
+
+        if (existingEmail) {
+
+            showToast(
+                "Gmail Already Registered",
+                "A student with this Gmail address is already registered.",
+                "error"
+            );
+
+            return;
+
+        }
+
+
+        // =================================================
         // INSERT STUDENT
-        // ---------------------------------------------------
+        // =================================================
 
         const {
             data,
@@ -384,21 +507,37 @@ async function registerStudent() {
             .from("students")
             .insert([
                 {
-                    first_name: firstName,
+
+                    last_name:
+                        lastName,
+
+                    first_name:
+                        firstName,
 
                     middle_name:
                         middleName || null,
 
-                    last_name: lastName,
+                    gender:
+                        gender,
 
-                    extension:
-                        extension || null,
+                    birthday:
+                        birthday,
 
-                    email: email,
+                    course:
+                        course,
 
-                    course: course,
+                    year:
+                        year,
 
-                    year_level: yearLevel
+                    contact_number:
+                        contactNumber,
+
+                    email:
+                        email,
+
+                    extension_name:
+                        extensionName || null
+
                 }
             ])
             .select()
@@ -412,21 +551,26 @@ async function registerStudent() {
         }
 
 
-        // ---------------------------------------------------
+        // =================================================
         // SUCCESS
-        // ---------------------------------------------------
+        // =================================================
 
         const fullName =
             buildFullName(data);
 
+
         registeredStudentName.textContent =
             fullName;
 
+
         showSuccessModal();
+
 
         studentForm.reset();
 
+
         resetExtensionCheckboxes();
+
 
         await loadStudents();
 
@@ -439,6 +583,7 @@ async function registerStudent() {
             "Registration error:",
             error
         );
+
 
         showToast(
             "Registration Failed",
@@ -464,21 +609,30 @@ async function registerStudent() {
 
 function resetExtensionCheckboxes() {
 
-    document.getElementById(
-        "jrExtension"
-    ).checked = false;
-
-    document.getElementById(
-        "srExtension"
-    ).checked = false;
-
-    document.getElementById(
-        "iiExtension"
-    ).checked = false;
-
-    document.getElementById(
+    const extensions = [
+        "jrExtension",
+        "srExtension",
+        "iiExtension",
         "iiiExtension"
-    ).checked = false;
+    ];
+
+
+    extensions.forEach(
+        (id) => {
+
+            const checkbox =
+                document.getElementById(id);
+
+
+            if (checkbox) {
+
+                checkbox.checked =
+                    false;
+
+            }
+
+        }
+    );
 
 }
 
@@ -489,12 +643,15 @@ function resetExtensionCheckboxes() {
 
 function setSubmitLoading(loading) {
 
-    submitButton.disabled = loading;
+    submitButton.disabled =
+        loading;
+
 
     if (loading) {
 
         submitText.textContent =
             "Registering...";
+
 
         loadingSpinner.classList.add(
             "active"
@@ -504,6 +661,7 @@ function setSubmitLoading(loading) {
 
         submitText.textContent =
             "Register Student";
+
 
         loadingSpinner.classList.remove(
             "active"
@@ -522,6 +680,7 @@ async function loadStudents() {
 
     showDirectoryLoading();
 
+
     try {
 
         const {
@@ -539,7 +698,9 @@ async function loadStudents() {
         }
 
 
-        students = data || [];
+        students =
+            data || [];
+
 
         applyFiltersAndSort();
 
@@ -553,23 +714,31 @@ async function loadStudents() {
             error
         );
 
+
         students = [];
 
         filteredStudents = [];
 
-        hideDirectoryLoading();
 
         studentsGrid.innerHTML = "";
+
 
         emptyState.classList.remove(
             "hidden"
         );
 
-        emptyState.querySelector("h3").textContent =
+
+        emptyState.querySelector(
+            "h3"
+        ).textContent =
             "Unable to load students";
 
-        emptyState.querySelector("p").textContent =
+
+        emptyState.querySelector(
+            "p"
+        ).textContent =
             getSupabaseErrorMessage(error);
+
 
         updateStudentCount();
 
@@ -588,11 +757,14 @@ function showDirectoryLoading() {
         "hidden"
     );
 
+
     studentsGrid.innerHTML = "";
+
 
     studentsGrid.appendChild(
         directoryLoading
     );
+
 
     directoryLoading.style.display =
         "flex";
@@ -601,7 +773,7 @@ function showDirectoryLoading() {
 
 
 // =========================================================
-// HIDE DIRECTORY LOADING
+// HIDE LOADING
 // =========================================================
 
 function hideDirectoryLoading() {
@@ -654,7 +826,9 @@ function setupDirectoryControls() {
                 "refreshing"
             );
 
+
             await loadStudents();
+
 
             setTimeout(
                 () => {
@@ -679,7 +853,9 @@ function setupDirectoryControls() {
 
 function updateSearchButton() {
 
-    if (searchInput.value.trim()) {
+    if (
+        searchInput.value.trim()
+    ) {
 
         clearSearch.classList.add(
             "visible"
@@ -697,12 +873,13 @@ function updateSearchButton() {
 
 
 // =========================================================
-// FILTER + SORT
+// FILTER + AUTOMATIC A-Z SORT
 // =========================================================
 
 function applyFiltersAndSort() {
 
     hideDirectoryLoading();
+
 
     const search =
         searchInput.value
@@ -710,9 +887,9 @@ function applyFiltersAndSort() {
             .toLowerCase();
 
 
-    // -------------------------------------------------------
+    // =====================================================
     // FILTER
-    // -------------------------------------------------------
+    // =====================================================
 
     filteredStudents =
         students.filter(
@@ -722,28 +899,51 @@ function applyFiltersAndSort() {
                     buildFullName(student)
                         .toLowerCase();
 
+
                 const email =
                     String(
                         student.email || ""
                     ).toLowerCase();
 
+
+                const contact =
+                    String(
+                        student.contact_number || ""
+                    ).toLowerCase();
+
+
+                const course =
+                    String(
+                        student.course || ""
+                    ).toLowerCase();
+
+
+                const year =
+                    String(
+                        student.year || ""
+                    ).toLowerCase();
+
+
                 return (
                     fullName.includes(search) ||
-                    email.includes(search)
+                    email.includes(search) ||
+                    contact.includes(search) ||
+                    course.includes(search) ||
+                    year.includes(search)
                 );
 
             }
         );
 
 
-    // -------------------------------------------------------
-    // AUTOMATIC A-Z SORT
+    // =====================================================
+    // ALWAYS SORT A-Z
     //
     // LAST NAME
     // FIRST NAME
     // EXTENSION
     // MIDDLE NAME
-    // -------------------------------------------------------
+    // =====================================================
 
     filteredStudents.sort(
         compareStudents
@@ -761,28 +961,16 @@ function applyFiltersAndSort() {
 
 function compareStudents(a, b) {
 
-    // -------------------------------------------------------
+    // -----------------------------------------------------
     // LAST NAME
-    // -------------------------------------------------------
+    // -----------------------------------------------------
 
-    const lastNameA =
-        normalizeName(
-            a.last_name
-        );
-
-    const lastNameB =
-        normalizeName(
+    const lastNameComparison =
+        compareText(
+            a.last_name,
             b.last_name
         );
 
-    const lastNameComparison =
-        lastNameA.localeCompare(
-            lastNameB,
-            undefined,
-            {
-                sensitivity: "base"
-            }
-        );
 
     if (lastNameComparison !== 0) {
 
@@ -791,28 +979,16 @@ function compareStudents(a, b) {
     }
 
 
-    // -------------------------------------------------------
+    // -----------------------------------------------------
     // FIRST NAME
-    // -------------------------------------------------------
+    // -----------------------------------------------------
 
-    const firstNameA =
-        normalizeName(
-            a.first_name
-        );
-
-    const firstNameB =
-        normalizeName(
+    const firstNameComparison =
+        compareText(
+            a.first_name,
             b.first_name
         );
 
-    const firstNameComparison =
-        firstNameA.localeCompare(
-            firstNameB,
-            undefined,
-            {
-                sensitivity: "base"
-            }
-        );
 
     if (firstNameComparison !== 0) {
 
@@ -821,28 +997,16 @@ function compareStudents(a, b) {
     }
 
 
-    // -------------------------------------------------------
+    // -----------------------------------------------------
     // EXTENSION
-    // -------------------------------------------------------
-
-    const extensionA =
-        normalizeName(
-            a.extension
-        );
-
-    const extensionB =
-        normalizeName(
-            b.extension
-        );
+    // -----------------------------------------------------
 
     const extensionComparison =
-        extensionA.localeCompare(
-            extensionB,
-            undefined,
-            {
-                sensitivity: "base"
-            }
+        compareText(
+            a.extension_name,
+            b.extension_name
         );
+
 
     if (extensionComparison !== 0) {
 
@@ -851,42 +1015,41 @@ function compareStudents(a, b) {
     }
 
 
-    // -------------------------------------------------------
+    // -----------------------------------------------------
     // MIDDLE NAME
-    // -------------------------------------------------------
+    // -----------------------------------------------------
 
-    const middleNameA =
-        normalizeName(
-            a.middle_name
-        );
-
-    const middleNameB =
-        normalizeName(
-            b.middle_name
-        );
-
-    return middleNameA.localeCompare(
-        middleNameB,
-        undefined,
-        {
-            sensitivity: "base"
-        }
+    return compareText(
+        a.middle_name,
+        b.middle_name
     );
 
 }
 
 
 // =========================================================
-// NORMALIZE NAME
+// COMPARE TEXT
 // =========================================================
 
-function normalizeName(value) {
+function compareText(a, b) {
 
-    return String(
-        value || ""
-    )
-        .trim()
-        .toLowerCase();
+    const valueA =
+        String(a || "")
+            .trim();
+
+
+    const valueB =
+        String(b || "")
+            .trim();
+
+
+    return valueA.localeCompare(
+        valueB,
+        undefined,
+        {
+            sensitivity: "base"
+        }
+    );
 
 }
 
@@ -899,12 +1062,16 @@ function renderStudents() {
 
     hideDirectoryLoading();
 
+
     studentsGrid.innerHTML = "";
+
 
     updateStudentCount();
 
 
-    if (filteredStudents.length === 0) {
+    if (
+        filteredStudents.length === 0
+    ) {
 
         emptyState.classList.remove(
             "hidden"
@@ -929,6 +1096,7 @@ function renderStudents() {
                     index
                 );
 
+
             studentsGrid.appendChild(
                 card
             );
@@ -949,10 +1117,14 @@ function createStudentCard(
 ) {
 
     const card =
-        document.createElement("article");
+        document.createElement(
+            "article"
+        );
+
 
     card.className =
         "student-card";
+
 
     card.style.animationDelay =
         `${Math.min(index * 0.04, 0.4)}s`;
@@ -971,8 +1143,8 @@ function createStudentCard(
 
     const registeredDate =
         formatDate(
-            student.registered_at ||
-            student.created_at
+            student.created_at ||
+            student.registered_at
         );
 
 
@@ -997,6 +1169,7 @@ function createStudentCard(
 
         <div class="student-info">
 
+
             <div class="info-row">
 
                 <div class="info-icon">
@@ -1006,12 +1179,83 @@ function createStudentCard(
                 <div class="info-text">
 
                     <span class="info-label">
-                        Email
+                        Gmail
                     </span>
 
                     <span class="info-value">
                         ${escapeHTML(
                             student.email || "N/A"
+                        )}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-icon">
+                    📱
+                </div>
+
+                <div class="info-text">
+
+                    <span class="info-label">
+                        Contact Number
+                    </span>
+
+                    <span class="info-value">
+                        ${escapeHTML(
+                            student.contact_number || "N/A"
+                        )}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-icon">
+                    👤
+                </div>
+
+                <div class="info-text">
+
+                    <span class="info-label">
+                        Gender
+                    </span>
+
+                    <span class="info-value">
+                        ${escapeHTML(
+                            student.gender || "N/A"
+                        )}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-row">
+
+                <div class="info-icon">
+                    🎂
+                </div>
+
+                <div class="info-text">
+
+                    <span class="info-label">
+                        Birthday
+                    </span>
+
+                    <span class="info-value">
+                        ${escapeHTML(
+                            formatBirthday(
+                                student.birthday
+                            )
                         )}
                     </span>
 
@@ -1057,7 +1301,7 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.year_level || "N/A"
+                            student.year || "N/A"
                         )}
                     </span>
 
@@ -1069,7 +1313,9 @@ function createStudentCard(
 
 
         <div class="registration-time">
-            Registered: ${escapeHTML(registeredDate)}
+            Registered: ${escapeHTML(
+                registeredDate
+            )}
         </div>
 
     `;
@@ -1088,26 +1334,35 @@ function buildFullName(student) {
 
     const parts = [];
 
+
     if (student.first_name) {
 
         parts.push(
-            student.first_name
+            String(
+                student.first_name
+            ).trim()
         );
 
     }
+
 
     if (student.middle_name) {
 
         parts.push(
-            student.middle_name
+            String(
+                student.middle_name
+            ).trim()
         );
 
     }
 
+
     if (student.last_name) {
 
         parts.push(
-            student.last_name
+            String(
+                student.last_name
+            ).trim()
         );
 
     }
@@ -1117,15 +1372,18 @@ function buildFullName(student) {
         parts.join(" ");
 
 
-    if (student.extension) {
+    if (student.extension_name) {
 
         name +=
-            ` ${student.extension}`;
+            ` ${String(
+                student.extension_name
+            ).trim()}`;
 
     }
 
 
-    return name || "Unnamed Student";
+    return name ||
+        "Unnamed Student";
 
 }
 
@@ -1144,6 +1402,7 @@ function getInitials(
             firstName || "?"
         ).trim();
 
+
     const last =
         String(
             lastName || "?"
@@ -1159,7 +1418,47 @@ function getInitials(
 
 
 // =========================================================
-// FORMAT DATE
+// FORMAT BIRTHDAY
+// =========================================================
+
+function formatBirthday(value) {
+
+    if (!value) {
+
+        return "N/A";
+
+    }
+
+
+    const date =
+        new Date(value);
+
+
+    if (
+        Number.isNaN(
+            date.getTime()
+        )
+    ) {
+
+        return "N/A";
+
+    }
+
+
+    return date.toLocaleDateString(
+        "en-PH",
+        {
+            month: "short",
+            day: "numeric",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+// =========================================================
+// FORMAT REGISTRATION DATE
 // =========================================================
 
 function formatDate(value) {
@@ -1230,7 +1529,9 @@ function setupModal() {
 
             hideSuccessModal();
 
-            showSection("directory");
+            showSection(
+                "directory"
+            );
 
         }
     );
@@ -1284,10 +1585,12 @@ function showSuccessModal() {
         "show"
     );
 
+
     successModal.setAttribute(
         "aria-hidden",
         "false"
     );
+
 
     document.body.style.overflow =
         "hidden";
@@ -1305,10 +1608,12 @@ function hideSuccessModal() {
         "show"
     );
 
+
     successModal.setAttribute(
         "aria-hidden",
         "true"
     );
+
 
     document.body.style.overflow =
         "";
@@ -1329,6 +1634,7 @@ function showToast(
     toastTitle.textContent =
         title;
 
+
     toastMessage.textContent =
         message;
 
@@ -1339,6 +1645,7 @@ function showToast(
             "error"
         );
 
+
         toastIcon.textContent =
             "!";
 
@@ -1347,6 +1654,7 @@ function showToast(
         toast.classList.remove(
             "error"
         );
+
 
         toastIcon.textContent =
             "✓";
@@ -1411,6 +1719,15 @@ function getSupabaseErrorMessage(
 
 
     if (
+        error.code === "23505"
+    ) {
+
+        return "This student information already exists.";
+
+    }
+
+
+    if (
         error.code === "42501"
     ) {
 
@@ -1420,10 +1737,19 @@ function getSupabaseErrorMessage(
 
 
     if (
-        error.code === "23505"
+        error.code === "PGRST204"
     ) {
 
-        return "This student information already exists.";
+        return "A column used by the website does not exist in your Supabase students table.";
+
+    }
+
+
+    if (
+        error.code === "23502"
+    ) {
+
+        return "A required database field is missing.";
 
     }
 
@@ -1448,7 +1774,9 @@ function getSupabaseErrorMessage(
 
 function escapeHTML(value) {
 
-    return String(value ?? "")
+    return String(
+        value ?? ""
+    )
         .replace(
             /&/g,
             "&amp;"

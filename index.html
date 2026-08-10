@@ -91,14 +91,14 @@
 
 
     <!-- =====================================================
-         MAIN CONTENT
+         MAIN
     ====================================================== -->
 
     <main>
 
 
         <!-- =================================================
-             REGISTRATION SECTION
+             REGISTRATION
         ================================================== -->
 
         <section
@@ -107,9 +107,6 @@
         >
 
             <div class="container">
-
-
-                <!-- PAGE HEADER -->
 
                 <div class="page-header">
 
@@ -129,9 +126,6 @@
                 </div>
 
 
-
-                <!-- REGISTRATION FORM -->
-
                 <form
                     id="studentForm"
                     class="registration-form"
@@ -139,9 +133,7 @@
                 >
 
 
-                    <!-- =====================================
-                         PERSONAL INFORMATION
-                    ====================================== -->
+                    <!-- PERSONAL INFORMATION -->
 
                     <div class="form-section">
 
@@ -158,7 +150,7 @@
                                 </h2>
 
                                 <p>
-                                    Enter your complete name.
+                                    Enter your complete personal information.
                                 </p>
 
                             </div>
@@ -242,7 +234,7 @@
 
                             <!-- EXTENSION -->
 
-                            <div class="form-group extension-group">
+                            <div class="form-group">
 
                                 <label>
                                     Name Extension
@@ -318,15 +310,171 @@
 
                             </div>
 
+
+                            <!-- GENDER -->
+
+                            <div class="form-group">
+
+                                <label for="gender">
+
+                                    Gender
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <select
+                                    id="gender"
+                                    name="gender"
+                                    required
+                                >
+
+                                    <option
+                                        value=""
+                                        selected
+                                        disabled
+                                    >
+                                        Select gender
+                                    </option>
+
+                                    <option value="Male">
+                                        Male
+                                    </option>
+
+                                    <option value="Female">
+                                        Female
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- BIRTHDAY -->
+
+                            <div class="form-group">
+
+                                <label for="birthday">
+
+                                    Birthday
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <input
+                                    type="date"
+                                    id="birthday"
+                                    name="birthday"
+                                    required
+                                >
+
+                            </div>
+
                         </div>
 
                     </div>
 
 
 
-                    <!-- =====================================
+                    <!-- =================================================
+                         CONTACT INFORMATION
+                    ================================================== -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-header">
+
+                            <div class="section-icon">
+                                📱
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Contact Information
+                                </h2>
+
+                                <p>
+                                    Enter your contact details.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-grid">
+
+
+                            <!-- GMAIL -->
+
+                            <div class="form-group">
+
+                                <label for="email">
+
+                                    Gmail Address
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder="example@gmail.com"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                                <small>
+                                    A Gmail address is required.
+                                </small>
+
+                            </div>
+
+
+                            <!-- CONTACT NUMBER -->
+
+                            <div class="form-group">
+
+                                <label for="contactNumber">
+
+                                    Contact Number
+
+                                    <span class="required">
+                                        *
+                                    </span>
+
+                                </label>
+
+                                <input
+                                    type="tel"
+                                    id="contactNumber"
+                                    name="contactNumber"
+                                    placeholder="09XXXXXXXXX"
+                                    autocomplete="tel"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- =================================================
                          STUDENT INFORMATION
-                    ====================================== -->
+                    ================================================== -->
 
                     <div class="form-section">
 
@@ -343,7 +491,7 @@
                                 </h2>
 
                                 <p>
-                                    Enter your academic details.
+                                    Enter your academic information.
                                 </p>
 
                             </div>
@@ -352,32 +500,6 @@
 
 
                         <div class="form-grid">
-
-
-                            <!-- EMAIL -->
-
-                            <div class="form-group">
-
-                                <label for="email">
-
-                                    Email Address
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
-                                </label>
-
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="Enter email address"
-                                    autocomplete="email"
-                                    required
-                                >
-
-                            </div>
 
 
                             <!-- COURSE -->
@@ -417,11 +539,11 @@
                             </div>
 
 
-                            <!-- YEAR LEVEL -->
+                            <!-- YEAR -->
 
                             <div class="form-group">
 
-                                <label for="yearLevel">
+                                <label for="year">
 
                                     Year Level
 
@@ -432,8 +554,8 @@
                                 </label>
 
                                 <select
-                                    id="yearLevel"
-                                    name="yearLevel"
+                                    id="year"
+                                    name="year"
                                     required
                                 >
 
@@ -471,9 +593,7 @@
 
 
 
-                    <!-- =====================================
-                         FORM ACTIONS
-                    ====================================== -->
+                    <!-- FORM ACTION -->
 
                     <div class="form-actions">
 
@@ -505,7 +625,7 @@
 
 
         <!-- =================================================
-             DIRECTORY SECTION
+             DIRECTORY
         ================================================== -->
 
         <section
@@ -515,8 +635,6 @@
 
             <div class="container">
 
-
-                <!-- DIRECTORY HEADER -->
 
                 <div class="directory-header">
 
@@ -553,12 +671,9 @@
 
 
 
-                <!-- DIRECTORY CONTROLS -->
+                <!-- SEARCH -->
 
                 <div class="directory-controls">
-
-
-                    <!-- SEARCH -->
 
                     <div class="search-wrapper">
 
@@ -572,7 +687,7 @@
                         <input
                             type="search"
                             id="searchInput"
-                            placeholder="Search by name or email..."
+                            placeholder="Search by name, Gmail, or contact number..."
                             autocomplete="off"
                         >
 
@@ -587,8 +702,6 @@
 
                     </div>
 
-
-                    <!-- REFRESH -->
 
                     <button
                         type="button"
@@ -619,10 +732,13 @@
                     </div>
 
                     <div class="sort-description">
+
                         Automatically sorted by
+
                         <strong>
                             Last Name → First Name → Extension → Middle Name
                         </strong>
+
                     </div>
 
                 </div>
@@ -716,9 +832,12 @@
 
 
             <p>
+
                 <strong id="registeredStudentName">
                 </strong>
+
                 has been successfully registered.
+
             </p>
 
 

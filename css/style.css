@@ -3,15 +3,22 @@
    BLUE / WHITE GLASS UI
 ========================================================= */
 
+
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
+
 
 body {
     min-height: 100vh;
@@ -47,15 +54,18 @@ body {
     overflow-x: hidden;
 }
 
+
 button,
 input,
 select {
     font: inherit;
 }
 
+
 button {
     cursor: pointer;
 }
+
 
 button:disabled {
     cursor: not-allowed;
@@ -68,8 +78,11 @@ button:disabled {
 
 .navbar {
     position: sticky;
+
     top: 0;
+
     z-index: 1000;
+
     width: 100%;
 
     background:
@@ -79,30 +92,41 @@ button:disabled {
         1px solid
         rgba(148, 163, 184, 0.22);
 
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter:
+        blur(20px);
+
+    -webkit-backdrop-filter:
+        blur(20px);
 
     box-shadow:
         0 8px 30px
         rgba(30, 64, 175, 0.06);
 }
 
+
 .nav-container {
-    width: min(1200px, calc(100% - 32px));
+    width: min(
+        1200px,
+        calc(100% - 32px)
+    );
 
     margin: 0 auto;
 
     min-height: 76px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
     gap: 24px;
 }
 
+
 .brand {
     display: flex;
+
     align-items: center;
 
     gap: 12px;
@@ -110,11 +134,13 @@ button:disabled {
     min-width: 0;
 }
 
+
 .brand-icon {
     width: 44px;
     height: 44px;
 
     display: grid;
+
     place-items: center;
 
     flex-shrink: 0;
@@ -137,31 +163,42 @@ button:disabled {
         rgba(37, 99, 235, 0.24);
 }
 
+
 .brand-text {
     display: flex;
+
     flex-direction: column;
 
     gap: 2px;
 }
 
+
 .brand-text strong {
     font-size: 15px;
+
     color: #0f2f57;
 }
 
+
 .brand-text span {
     font-size: 11px;
+
     color: #64748b;
 }
 
+
 .nav-links {
     display: flex;
+
     align-items: center;
+
     gap: 6px;
 }
 
+
 .nav-link {
     border: 0;
+
     background: transparent;
 
     color: #64748b;
@@ -171,11 +208,13 @@ button:disabled {
     border-radius: 12px;
 
     display: flex;
+
     align-items: center;
 
     gap: 7px;
 
     font-weight: 600;
+
     font-size: 13px;
 
     transition:
@@ -183,6 +222,7 @@ button:disabled {
         color 0.2s ease,
         transform 0.2s ease;
 }
+
 
 .nav-link:hover {
     background:
@@ -194,12 +234,14 @@ button:disabled {
         translateY(-1px);
 }
 
+
 .nav-link.active {
     color: #2563eb;
 
     background:
         rgba(37, 99, 235, 0.1);
 }
+
 
 .nav-icon {
     font-size: 15px;
@@ -211,7 +253,10 @@ button:disabled {
 ========================================================= */
 
 .container {
-    width: min(1100px, calc(100% - 32px));
+    width: min(
+        1100px,
+        calc(100% - 32px)
+    );
 
     margin: 0 auto;
 }
@@ -231,6 +276,7 @@ button:disabled {
         58px 0 80px;
 }
 
+
 .page-section.active-section {
     display: block;
 
@@ -240,18 +286,23 @@ button:disabled {
         ease;
 }
 
+
 @keyframes sectionIn {
+
     from {
         opacity: 0;
+
         transform:
             translateY(10px);
     }
 
     to {
         opacity: 1;
+
         transform:
             translateY(0);
     }
+
 }
 
 
@@ -268,10 +319,12 @@ button:disabled {
         0 auto 40px;
 }
 
+
 .header-badge {
     display: inline-flex;
 
     align-items: center;
+
     justify-content: center;
 
     padding:
@@ -289,6 +342,7 @@ button:disabled {
         rgba(37, 99, 235, 0.13);
 
     font-size: 11px;
+
     font-weight: 800;
 
     letter-spacing:
@@ -296,6 +350,7 @@ button:disabled {
 
     margin-bottom: 12px;
 }
+
 
 .page-header h1,
 .directory-heading h1 {
@@ -312,6 +367,7 @@ button:disabled {
     margin-bottom: 12px;
 }
 
+
 .page-header p,
 .directory-heading p {
     color: #64748b;
@@ -323,15 +379,17 @@ button:disabled {
 
 
 /* =========================================================
-   REGISTRATION FORM
+   FORM
 ========================================================= */
 
 .registration-form {
     display: flex;
+
     flex-direction: column;
 
     gap: 22px;
 }
+
 
 .form-section {
     position: relative;
@@ -351,11 +409,15 @@ button:disabled {
         0 20px 60px
         rgba(30, 64, 175, 0.08);
 
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
 
     overflow: hidden;
 }
+
 
 .form-section::before {
     content: "";
@@ -376,6 +438,7 @@ button:disabled {
         );
 }
 
+
 .form-section-header {
     display: flex;
 
@@ -386,11 +449,13 @@ button:disabled {
     margin-bottom: 24px;
 }
 
+
 .section-icon {
     width: 44px;
     height: 44px;
 
     display: grid;
+
     place-items: center;
 
     flex-shrink: 0;
@@ -403,6 +468,7 @@ button:disabled {
     font-size: 20px;
 }
 
+
 .form-section-header h2 {
     color: #173b68;
 
@@ -411,11 +477,13 @@ button:disabled {
     margin-bottom: 3px;
 }
 
+
 .form-section-header p {
     color: #7890a8;
 
     font-size: 12px;
 }
+
 
 .form-grid {
     display: grid;
@@ -426,23 +494,29 @@ button:disabled {
     gap: 20px;
 }
 
+
 .form-group {
     display: flex;
+
     flex-direction: column;
 
     gap: 8px;
 }
 
+
 .form-group label {
     color: #334e68;
 
     font-size: 13px;
+
     font-weight: 700;
 }
+
 
 .required {
     color: #ef4444;
 }
+
 
 .form-group input,
 .form-group select {
@@ -472,15 +546,18 @@ button:disabled {
         background 0.2s ease;
 }
 
+
 .form-group input::placeholder {
     color: #9aabbc;
 }
+
 
 .form-group input:hover,
 .form-group select:hover {
     border-color:
         #b7cbe0;
 }
+
 
 .form-group input:focus,
 .form-group select:focus {
@@ -493,6 +570,13 @@ button:disabled {
     box-shadow:
         0 0 0 4px
         rgba(59, 130, 246, 0.1);
+}
+
+
+.form-group small {
+    color: #94a3b8;
+
+    font-size: 11px;
 }
 
 
@@ -511,6 +595,7 @@ button:disabled {
 
     gap: 8px;
 }
+
 
 .checkbox-option {
     position: relative;
@@ -543,6 +628,7 @@ button:disabled {
         transform 0.2s ease;
 }
 
+
 .checkbox-option:hover {
     border-color:
         #93c5fd;
@@ -553,6 +639,7 @@ button:disabled {
     transform:
         translateY(-1px);
 }
+
 
 .checkbox-option input {
     width: 15px !important;
@@ -566,6 +653,7 @@ button:disabled {
     box-shadow: none !important;
 }
 
+
 .checkbox-option span {
     font-size: 12px;
 
@@ -574,15 +662,9 @@ button:disabled {
     color: #486581;
 }
 
-.extension-group small {
-    color: #94a3b8;
-
-    font-size: 11px;
-}
-
 
 /* =========================================================
-   FORM ACTIONS
+   BUTTON
 ========================================================= */
 
 .form-actions {
@@ -592,6 +674,7 @@ button:disabled {
 
     padding-top: 4px;
 }
+
 
 .primary-button {
     min-height: 50px;
@@ -634,6 +717,7 @@ button:disabled {
         opacity 0.2s ease;
 }
 
+
 .primary-button:hover {
     transform:
         translateY(-2px);
@@ -643,10 +727,12 @@ button:disabled {
         rgba(37, 99, 235, 0.28);
 }
 
+
 .primary-button:active {
     transform:
         translateY(0);
 }
+
 
 .primary-button:disabled {
     opacity: 0.65;
@@ -658,7 +744,7 @@ button:disabled {
 
 
 /* =========================================================
-   LOADING SPINNER
+   SPINNER
 ========================================================= */
 
 .loading-spinner {
@@ -683,15 +769,19 @@ button:disabled {
         infinite;
 }
 
+
 .loading-spinner.active {
     display: inline-block;
 }
 
+
 @keyframes spin {
+
     to {
         transform:
             rotate(360deg);
     }
+
 }
 
 
@@ -711,9 +801,11 @@ button:disabled {
     margin-bottom: 30px;
 }
 
+
 .directory-heading {
     max-width: 700px;
 }
+
 
 .student-count-box {
     min-width: 120px;
@@ -737,6 +829,7 @@ button:disabled {
         rgba(30, 64, 175, 0.07);
 }
 
+
 .student-count-box strong {
     display: block;
 
@@ -746,6 +839,7 @@ button:disabled {
 
     line-height: 1;
 }
+
 
 .student-count-box span {
     display: block;
@@ -772,11 +866,13 @@ button:disabled {
     margin-bottom: 15px;
 }
 
+
 .search-wrapper {
     position: relative;
 
     flex: 1;
 }
+
 
 .search-wrapper input {
     width: 100%;
@@ -808,6 +904,7 @@ button:disabled {
         box-shadow 0.2s ease;
 }
 
+
 .search-wrapper input:focus {
     border-color:
         #3b82f6;
@@ -816,6 +913,7 @@ button:disabled {
         0 0 0 4px
         rgba(59, 130, 246, 0.08);
 }
+
 
 .search-icon {
     position: absolute;
@@ -831,6 +929,7 @@ button:disabled {
 
     pointer-events: none;
 }
+
 
 .clear-search {
     position: absolute;
@@ -863,9 +962,11 @@ button:disabled {
     line-height: 1;
 }
 
+
 .clear-search.visible {
     display: grid;
 }
+
 
 .refresh-button {
     min-height: 50px;
@@ -900,6 +1001,7 @@ button:disabled {
         transform 0.2s ease;
 }
 
+
 .refresh-button:hover {
     background:
         #ffffff;
@@ -911,11 +1013,13 @@ button:disabled {
         translateY(-1px);
 }
 
+
 .refresh-icon {
     font-size: 18px;
 
     display: inline-block;
 }
+
 
 .refresh-button.refreshing .refresh-icon {
     animation:
@@ -952,6 +1056,7 @@ button:disabled {
         rgba(37, 99, 235, 0.08);
 }
 
+
 .sort-label {
     flex-shrink: 0;
 
@@ -973,11 +1078,13 @@ button:disabled {
         0.05em;
 }
 
+
 .sort-description {
     color: #64748b;
 
     font-size: 11px;
 }
+
 
 .sort-description strong {
     color: #365b83;
@@ -996,6 +1103,7 @@ button:disabled {
 
     gap: 18px;
 }
+
 
 .student-card {
     padding: 20px;
@@ -1030,6 +1138,7 @@ button:disabled {
         box-shadow 0.2s ease;
 }
 
+
 .student-card:hover {
     transform:
         translateY(-3px);
@@ -1039,7 +1148,9 @@ button:disabled {
         rgba(30, 64, 175, 0.11);
 }
 
+
 @keyframes cardIn {
+
     from {
         opacity: 0;
 
@@ -1053,11 +1164,12 @@ button:disabled {
         transform:
             translateY(0);
     }
+
 }
 
 
 /* =========================================================
-   STUDENT CARD TOP
+   CARD TOP
 ========================================================= */
 
 .student-card-top {
@@ -1069,6 +1181,7 @@ button:disabled {
 
     margin-bottom: 18px;
 }
+
 
 .student-avatar {
     width: 48px;
@@ -1100,6 +1213,7 @@ button:disabled {
         rgba(37, 99, 235, 0.2);
 }
 
+
 .student-name {
     color: #173b68;
 
@@ -1110,14 +1224,6 @@ button:disabled {
     line-height: 1.3;
 
     word-break: break-word;
-}
-
-.student-id {
-    color: #7890a8;
-
-    font-size: 11px;
-
-    margin-top: 3px;
 }
 
 
@@ -1133,6 +1239,7 @@ button:disabled {
     gap: 11px;
 }
 
+
 .info-row {
     display: flex;
 
@@ -1140,6 +1247,7 @@ button:disabled {
 
     gap: 10px;
 }
+
 
 .info-icon {
     width: 30px;
@@ -1159,6 +1267,7 @@ button:disabled {
     font-size: 13px;
 }
 
+
 .info-text {
     min-width: 0;
 
@@ -1168,6 +1277,7 @@ button:disabled {
 
     gap: 2px;
 }
+
 
 .info-label {
     color: #94a3b8;
@@ -1181,6 +1291,7 @@ button:disabled {
     letter-spacing:
         0.08em;
 }
+
 
 .info-value {
     color: #486581;
@@ -1247,9 +1358,11 @@ button:disabled {
     color: #7890a8;
 }
 
+
 .empty-state.hidden {
     display: none;
 }
+
 
 .empty-icon {
     width: 64px;
@@ -1270,6 +1383,7 @@ button:disabled {
     font-size: 27px;
 }
 
+
 .empty-state h3 {
     color: #365b83;
 
@@ -1277,6 +1391,7 @@ button:disabled {
 
     margin-bottom: 7px;
 }
+
 
 .empty-state p {
     font-size: 12px;
@@ -1322,11 +1437,13 @@ button:disabled {
         visibility 0.25s ease;
 }
 
+
 .modal.show {
     opacity: 1;
 
     visibility: visible;
 }
+
 
 .modal-content {
     position: relative;
@@ -1357,11 +1474,13 @@ button:disabled {
         transform 0.25s ease;
 }
 
+
 .modal.show .modal-content {
     transform:
         translateY(0)
         scale(1);
 }
+
 
 .modal-close {
     position: absolute;
@@ -1386,6 +1505,7 @@ button:disabled {
     line-height: 1;
 }
 
+
 .success-icon {
     width: 68px;
     height: 68px;
@@ -1409,6 +1529,7 @@ button:disabled {
     font-weight: 900;
 }
 
+
 .modal-content h2 {
     color: #173b68;
 
@@ -1416,6 +1537,7 @@ button:disabled {
 
     margin-bottom: 9px;
 }
+
 
 .modal-content p {
     color: #64748b;
@@ -1426,6 +1548,7 @@ button:disabled {
 
     margin-bottom: 22px;
 }
+
 
 .modal-content p strong {
     color: #2563eb;
@@ -1490,6 +1613,7 @@ button:disabled {
         visibility 0.25s ease;
 }
 
+
 .toast.show {
     opacity: 1;
 
@@ -1498,6 +1622,7 @@ button:disabled {
     transform:
         translateY(0);
 }
+
 
 .toast-icon {
     width: 32px;
@@ -1519,12 +1644,14 @@ button:disabled {
     font-weight: 900;
 }
 
+
 .toast.error .toast-icon {
     background:
         #fee2e2;
 
     color: #dc2626;
 }
+
 
 .toast-content {
     min-width: 0;
@@ -1538,11 +1665,13 @@ button:disabled {
     gap: 2px;
 }
 
+
 .toast-content strong {
     color: #173b68;
 
     font-size: 12px;
 }
+
 
 .toast-content span {
     color: #7890a8;
@@ -1551,6 +1680,7 @@ button:disabled {
 
     line-height: 1.4;
 }
+
 
 .toast > button {
     width: 26px;
@@ -1579,9 +1709,11 @@ button:disabled {
         min-height: 70px;
     }
 
+
     .brand-text span {
         display: none;
     }
+
 
     .nav-link {
         padding:
@@ -1590,28 +1722,34 @@ button:disabled {
         font-size: 12px;
     }
 
+
     .nav-icon {
         display: none;
     }
+
 
     .page-section {
         padding:
             42px 0 60px;
     }
 
+
     .form-grid {
         grid-template-columns:
             1fr;
     }
+
 
     .students-grid {
         grid-template-columns:
             1fr;
     }
 
+
     .directory-header {
         align-items: flex-start;
     }
+
 }
 
 
@@ -1623,9 +1761,11 @@ button:disabled {
             calc(100% - 22px);
     }
 
+
     .nav-container {
         gap: 8px;
     }
+
 
     .brand-icon {
         width: 38px;
@@ -1636,13 +1776,16 @@ button:disabled {
         font-size: 18px;
     }
 
+
     .brand-text strong {
         font-size: 12px;
     }
 
+
     .nav-links {
         gap: 2px;
     }
+
 
     .nav-link {
         padding:
@@ -1651,14 +1794,17 @@ button:disabled {
         font-size: 11px;
     }
 
+
     .page-header {
         margin-bottom: 28px;
     }
+
 
     .page-header h1,
     .directory-heading h1 {
         font-size: 30px;
     }
+
 
     .form-section {
         padding: 20px;
@@ -1666,9 +1812,11 @@ button:disabled {
         border-radius: 19px;
     }
 
+
     .form-section-header {
         margin-bottom: 19px;
     }
+
 
     .directory-header {
         flex-direction: column;
@@ -1676,9 +1824,11 @@ button:disabled {
         margin-bottom: 22px;
     }
 
+
     .student-count-box {
         width: 100%;
     }
+
 
     .directory-controls {
         flex-direction: column;
@@ -1686,22 +1836,27 @@ button:disabled {
         align-items: stretch;
     }
 
+
     .refresh-button {
         justify-content: center;
     }
+
 
     .directory-sort-info {
         align-items: flex-start;
     }
 
+
     .sort-description {
         line-height: 1.5;
     }
+
 
     .modal-content {
         padding:
             30px 22px;
     }
+
 
     .toast {
         right: 11px;
@@ -1710,6 +1865,7 @@ button:disabled {
         width:
             calc(100% - 22px);
     }
+
 }
 
 
@@ -1719,6 +1875,7 @@ button:disabled {
         display: none;
     }
 
+
     .nav-link {
         font-size: 10px;
 
@@ -1726,12 +1883,15 @@ button:disabled {
             8px 7px;
     }
 
+
     .extension-options {
         gap: 5px;
     }
+
 
     .checkbox-option {
         padding:
             8px 9px;
     }
+
 }
