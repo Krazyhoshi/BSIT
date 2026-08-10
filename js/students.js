@@ -1,35 +1,19 @@
 // =========================================================
 // BSIT STUDENT SYSTEM
-// STUDENT REGISTRATION + DIRECTORY
-// AUTOMATIC SORT:
-// LAST NAME → FIRST NAME → EXTENSION → MIDDLE NAME
-// =========================================================
-
-
-// =========================================================
-// GLOBAL VARIABLES
 // =========================================================
 
 let students = [];
-
 let filteredStudents = [];
 
 
 // =========================================================
-// DOM ELEMENTS
+// DOM
 // =========================================================
 
-const studentForm =
-    document.getElementById("studentForm");
-
-const submitButton =
-    document.getElementById("submitButton");
-
-const submitText =
-    document.getElementById("submitText");
-
-const loadingSpinner =
-    document.getElementById("loadingSpinner");
+const studentForm = document.getElementById("studentForm");
+const submitButton = document.getElementById("submitButton");
+const submitText = document.getElementById("submitText");
+const loadingSpinner = document.getElementById("loadingSpinner");
 
 const registrationSection =
     document.getElementById("registrationSection");
@@ -96,24 +80,17 @@ const toastClose =
 // INITIALIZE
 // =========================================================
 
-document.addEventListener(
-    "DOMContentLoaded",
-    () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-        setupNavigation();
+    setupNavigation();
+    setupRegistrationForm();
+    setupDirectoryControls();
+    setupModal();
+    setupExtensionCheckboxes();
 
-        setupRegistrationForm();
+    loadStudents();
 
-        setupDirectoryControls();
-
-        setupModal();
-
-        setupExtensionCheckboxes();
-
-        loadStudents();
-
-    }
-);
+});
 
 
 // =========================================================
@@ -122,46 +99,25 @@ document.addEventListener(
 
 function setupNavigation() {
 
-    registerNav.addEventListener(
-        "click",
-        () => {
+    registerNav.addEventListener("click", () => {
+        showSection("register");
+    });
 
-            showSection("register");
-
-        }
-    );
-
-
-    directoryNav.addEventListener(
-        "click",
-        () => {
-
-            showSection("directory");
-
-        }
-    );
+    directoryNav.addEventListener("click", () => {
+        showSection("directory");
+    });
 
 }
 
-
-// =========================================================
-// SHOW SECTION
-// =========================================================
 
 function showSection(section) {
 
     if (section === "register") {
 
-        registrationSection.classList.add(
-            "active-section"
-        );
-
-        directorySection.classList.remove(
-            "active-section"
-        );
+        registrationSection.classList.add("active-section");
+        directorySection.classList.remove("active-section");
 
         registerNav.classList.add("active");
-
         directoryNav.classList.remove("active");
 
         window.scrollTo({
@@ -174,16 +130,10 @@ function showSection(section) {
 
     if (section === "directory") {
 
-        registrationSection.classList.remove(
-            "active-section"
-        );
-
-        directorySection.classList.add(
-            "active-section"
-        );
+        registrationSection.classList.remove("active-section");
+        directorySection.classList.add("active-section");
 
         registerNav.classList.remove("active");
-
         directoryNav.classList.add("active");
 
         loadStudents();
@@ -199,50 +149,82 @@ function showSection(section) {
 
 
 // =========================================================
-// REGISTRATION FORM
+// REGISTRATION
 // =========================================================
 
 function setupRegistrationForm() {
 
-    studentForm.addEventListener(
-        "submit",
-        async (event) => {
+    studentForm.addEventListener("submit", async (event) => {
 
-            event.preventDefault();
+        event.preventDefault();
 
-            await registerStudent();
+        await registerStudent();
 
-        }
-    );
+    });
 
 }
 
 
 // =========================================================
-// GET NAME EXTENSION
+// EXTENSION
 // =========================================================
 
-function getNameExtension() {
+function setupExtensionCheckboxes() {
 
-    const extensions = [
+    const ids = [
         "jrExtension",
         "srExtension",
         "iiExtension",
         "iiiExtension"
     ];
 
-    for (const id of extensions) {
+    ids.forEach(id => {
 
         const checkbox =
             document.getElementById(id);
 
-        if (
-            checkbox &&
-            checkbox.checked
-        ) {
+        if (!checkbox) return;
 
+        checkbox.addEventListener("change", () => {
+
+            if (!checkbox.checked) return;
+
+            ids.forEach(otherId => {
+
+                if (otherId === id) return;
+
+                const other =
+                    document.getElementById(otherId);
+
+                if (other) {
+                    other.checked = false;
+                }
+
+            });
+
+        });
+
+    });
+
+}
+
+
+function getNameExtension() {
+
+    const ids = [
+        "jrExtension",
+        "srExtension",
+        "iiExtension",
+        "iiiExtension"
+    ];
+
+    for (const id of ids) {
+
+        const checkbox =
+            document.getElementById(id);
+
+        if (checkbox?.checked) {
             return checkbox.value;
-
         }
 
     }
@@ -252,133 +234,66 @@ function getNameExtension() {
 }
 
 
-// =========================================================
-// EXTENSION CHECKBOXES
-// =========================================================
+function resetExtensionCheckboxes() {
 
-function setupExtensionCheckboxes() {
-
-    const extensions = [
+    [
         "jrExtension",
         "srExtension",
         "iiExtension",
         "iiiExtension"
-    ];
+    ].forEach(id => {
 
-    extensions.forEach(
-        (id) => {
+        const checkbox =
+            document.getElementById(id);
 
-            const checkbox =
-                document.getElementById(id);
-
-            if (!checkbox) {
-                return;
-            }
-
-            checkbox.addEventListener(
-                "change",
-                () => {
-
-                    if (checkbox.checked) {
-
-                        extensions.forEach(
-                            (otherId) => {
-
-                                if (otherId !== id) {
-
-                                    const otherCheckbox =
-                                        document.getElementById(
-                                            otherId
-                                        );
-
-                                    if (otherCheckbox) {
-
-                                        otherCheckbox.checked =
-                                            false;
-
-                                    }
-
-                                }
-
-                            }
-                        );
-
-                    }
-
-                }
-            );
-
+        if (checkbox) {
+            checkbox.checked = false;
         }
-    );
+
+    });
 
 }
 
 
 // =========================================================
-// REGISTER STUDENT
+// REGISTER
 // =========================================================
 
 async function registerStudent() {
 
     const firstName =
-        document
-            .getElementById("firstName")
-            .value
-            .trim();
+        document.getElementById("firstName").value.trim();
 
     const middleName =
-        document
-            .getElementById("middleName")
-            .value
-            .trim();
+        document.getElementById("middleName").value.trim();
 
     const lastName =
-        document
-            .getElementById("lastName")
-            .value
-            .trim();
+        document.getElementById("lastName").value.trim();
+
+    const gender =
+        document.getElementById("gender").value.trim();
+
+    const birthday =
+        document.getElementById("birthday").value.trim();
+
+    const course =
+        document.getElementById("course").value;
+
+    const year =
+        document.getElementById("year").value.trim();
+
+    const contactNumber =
+        document.getElementById("contactNumber").value.trim();
+
+    const email =
+        document.getElementById("email").value.trim();
 
     const extension =
         getNameExtension();
 
-    const gender =
-        document
-            .getElementById("gender")
-            ?.value
-            ?.trim() || "";
-
-    const birthday =
-        document
-            .getElementById("birthday")
-            ?.value
-            ?.trim() || "";
-
-    const course =
-        document
-            .getElementById("course")
-            .value;
-
-    const year =
-        document
-            .getElementById("year")
-            ?.value
-            ?.trim() || "";
-
-    const contactNumber =
-        document
-            .getElementById("contactNumber")
-            ?.value
-            ?.trim() || "";
-
-    const email =
-        document
-            .getElementById("email")
-            .value
-            .trim();
-
 
     // =====================================================
-    // BASIC VALIDATION
+    // VALIDATION
     // =====================================================
 
     if (
@@ -403,77 +318,81 @@ async function registerStudent() {
     }
 
 
-    // =====================================================
-    // LOADING STATE
-    // =====================================================
+    // Gmail validation
+    if (!email.toLowerCase().endsWith("@gmail.com")) {
+
+        showToast(
+            "Invalid Gmail",
+            "Please use a valid Gmail address.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    // Contact validation
+    if (!/^09\d{9}$/.test(contactNumber)) {
+
+        showToast(
+            "Invalid Contact Number",
+            "Use the format 09XXXXXXXXX.",
+            "error"
+        );
+
+        return;
+
+    }
+
 
     setSubmitLoading(true);
 
 
     try {
 
-        // =================================================
-        // INSERT STUDENT
-        // =================================================
-
         const {
             data,
             error
         } = await supabaseClient
             .from("students")
-            .insert([
-                {
-                    last_name:
-                        lastName,
+            .insert([{
 
-                    first_name:
-                        firstName,
+                last_name: lastName,
 
-                    middle_name:
-                        middleName || null,
+                first_name: firstName,
 
-                    gender:
-                        gender,
+                middle_name:
+                    middleName || null,
 
-                    birthday:
-                        birthday,
+                gender: gender,
 
-                    course:
-                        course,
+                birthday: birthday,
 
-                    year:
-                        year,
+                course: course,
 
-                    contact_number:
-                        contactNumber,
+                year: year,
 
-                    email:
-                        email,
+                contact_number:
+                    contactNumber,
 
-                    extension_name:
-                        extension || null
-                }
-            ])
+                email: email,
+
+                extension_name:
+                    extension || null
+
+            }])
             .select()
             .single();
 
 
         if (error) {
-
             throw error;
-
         }
 
 
-        // =================================================
-        // SUCCESS
-        // =================================================
-
-        const fullName =
-            buildFullName(data);
-
         registeredStudentName.textContent =
-            fullName;
+            buildFullName(data);
 
         showSuccessModal();
 
@@ -488,10 +407,7 @@ async function registerStudent() {
 
     catch (error) {
 
-        console.error(
-            "Registration error:",
-            error
-        );
+        console.error(error);
 
         showToast(
             "Registration Failed",
@@ -512,63 +428,26 @@ async function registerStudent() {
 
 
 // =========================================================
-// RESET EXTENSIONS
-// =========================================================
-
-function resetExtensionCheckboxes() {
-
-    const extensions = [
-        "jrExtension",
-        "srExtension",
-        "iiExtension",
-        "iiiExtension"
-    ];
-
-    extensions.forEach(
-        (id) => {
-
-            const checkbox =
-                document.getElementById(id);
-
-            if (checkbox) {
-
-                checkbox.checked =
-                    false;
-
-            }
-
-        }
-    );
-
-}
-
-
-// =========================================================
-// SUBMIT LOADING
+// LOADING
 // =========================================================
 
 function setSubmitLoading(loading) {
 
-    submitButton.disabled =
-        loading;
+    submitButton.disabled = loading;
 
     if (loading) {
 
         submitText.textContent =
             "Registering...";
 
-        loadingSpinner.classList.add(
-            "active"
-        );
+        loadingSpinner.classList.add("active");
 
     } else {
 
         submitText.textContent =
             "Register Student";
 
-        loadingSpinner.classList.remove(
-            "active"
-        );
+        loadingSpinner.classList.remove("active");
 
     }
 
@@ -594,9 +473,7 @@ async function loadStudents() {
 
 
         if (error) {
-
             throw error;
-
         }
 
 
@@ -612,22 +489,16 @@ async function loadStudents() {
 
     catch (error) {
 
-        console.error(
-            "Loading students error:",
-            error
-        );
+        console.error(error);
 
         students = [];
-
         filteredStudents = [];
 
         hideDirectoryLoading();
 
         studentsGrid.innerHTML = "";
 
-        emptyState.classList.remove(
-            "hidden"
-        );
+        emptyState.classList.remove("hidden");
 
         emptyState.querySelector("h3").textContent =
             "Unable to load students";
@@ -643,35 +514,25 @@ async function loadStudents() {
 
 
 // =========================================================
-// DIRECTORY LOADING
+// LOADING UI
 // =========================================================
 
 function showDirectoryLoading() {
 
-    emptyState.classList.add(
-        "hidden"
-    );
+    emptyState.classList.add("hidden");
 
     studentsGrid.innerHTML = "";
 
-    studentsGrid.appendChild(
-        directoryLoading
-    );
+    studentsGrid.appendChild(directoryLoading);
 
-    directoryLoading.style.display =
-        "flex";
+    directoryLoading.style.display = "flex";
 
 }
 
 
-// =========================================================
-// HIDE DIRECTORY LOADING
-// =========================================================
-
 function hideDirectoryLoading() {
 
-    directoryLoading.style.display =
-        "none";
+    directoryLoading.style.display = "none";
 
 }
 
@@ -682,81 +543,54 @@ function hideDirectoryLoading() {
 
 function setupDirectoryControls() {
 
-    searchInput.addEventListener(
-        "input",
-        () => {
+    searchInput.addEventListener("input", () => {
 
-            updateSearchButton();
+        updateSearchButton();
 
-            applyFiltersAndSort();
+        applyFiltersAndSort();
 
-        }
-    );
+    });
 
 
-    clearSearch.addEventListener(
-        "click",
-        () => {
+    clearSearch.addEventListener("click", () => {
 
-            searchInput.value =
-                "";
+        searchInput.value = "";
 
-            updateSearchButton();
+        updateSearchButton();
 
-            applyFiltersAndSort();
+        applyFiltersAndSort();
 
-            searchInput.focus();
+        searchInput.focus();
 
-        }
-    );
+    });
 
 
-    refreshButton.addEventListener(
-        "click",
-        async () => {
+    refreshButton.addEventListener("click", async () => {
 
-            refreshButton.classList.add(
-                "refreshing"
-            );
+        refreshButton.classList.add("refreshing");
 
-            await loadStudents();
+        await loadStudents();
 
-            setTimeout(
-                () => {
+        setTimeout(() => {
 
-                    refreshButton.classList.remove(
-                        "refreshing"
-                    );
+            refreshButton.classList.remove("refreshing");
 
-                },
-                300
-            );
+        }, 300);
 
-        }
-    );
+    });
 
 }
 
 
-// =========================================================
-// SEARCH BUTTON
-// =========================================================
-
 function updateSearchButton() {
 
-    if (
-        searchInput.value.trim()
-    ) {
+    if (searchInput.value.trim()) {
 
-        clearSearch.classList.add(
-            "visible"
-        );
+        clearSearch.classList.add("visible");
 
     } else {
 
-        clearSearch.classList.remove(
-            "visible"
-        );
+        clearSearch.classList.remove("visible");
 
     }
 
@@ -764,7 +598,7 @@ function updateSearchButton() {
 
 
 // =========================================================
-// FILTER + AUTOMATIC SORT
+// FILTER + SORT
 // =========================================================
 
 function applyFiltersAndSort() {
@@ -772,62 +606,37 @@ function applyFiltersAndSort() {
     hideDirectoryLoading();
 
     const search =
-        searchInput.value
-            .trim()
-            .toLowerCase();
+        searchInput.value.trim().toLowerCase();
 
-
-    // =====================================================
-    // FILTER
-    // =====================================================
 
     filteredStudents =
-        students.filter(
-            (student) => {
+        students.filter(student => {
 
-                const fullName =
-                    buildFullName(student)
-                        .toLowerCase();
+            const fullName =
+                buildFullName(student).toLowerCase();
 
-                const email =
-                    String(
-                        student.email || ""
-                    ).toLowerCase();
+            const email =
+                String(student.email || "").toLowerCase();
 
-                const course =
-                    String(
-                        student.course || ""
-                    ).toLowerCase();
+            const course =
+                String(student.course || "").toLowerCase();
 
-                const contactNumber =
-                    String(
-                        student.contact_number || ""
-                    ).toLowerCase();
+            const contact =
+                String(
+                    student.contact_number || ""
+                ).toLowerCase();
 
-                return (
-                    fullName.includes(search) ||
-                    email.includes(search) ||
-                    course.includes(search) ||
-                    contactNumber.includes(search)
-                );
+            return (
+                fullName.includes(search) ||
+                email.includes(search) ||
+                course.includes(search) ||
+                contact.includes(search)
+            );
 
-            }
-        );
+        });
 
 
-    // =====================================================
-    // AUTOMATIC A-Z SORT
-    //
-    // LAST NAME
-    // → FIRST NAME
-    // → EXTENSION
-    // → MIDDLE NAME
-    // =====================================================
-
-    filteredStudents.sort(
-        compareStudentNames
-    );
-
+    filteredStudents.sort(compareStudentNames);
 
     renderStudents();
 
@@ -835,156 +644,66 @@ function applyFiltersAndSort() {
 
 
 // =========================================================
-// COMPARE STUDENT NAMES
+// SORT
 // =========================================================
 
 function compareStudentNames(a, b) {
 
-    // =====================================================
-    // 1. LAST NAME
-    // =====================================================
-
-    const lastNameA =
-        normalizeNamePart(
-            a.last_name
-        );
-
-    const lastNameB =
-        normalizeNamePart(
+    let result =
+        compareNamePart(
+            a.last_name,
             b.last_name
         );
 
-
-    const lastNameComparison =
-        lastNameA.localeCompare(
-            lastNameB,
-            undefined,
-            {
-                sensitivity: "base"
-            }
-        );
+    if (result !== 0) return result;
 
 
-    if (
-        lastNameComparison !== 0
-    ) {
-
-        return lastNameComparison;
-
-    }
-
-
-    // =====================================================
-    // 2. FIRST NAME
-    // =====================================================
-
-    const firstNameA =
-        normalizeNamePart(
-            a.first_name
-        );
-
-    const firstNameB =
-        normalizeNamePart(
+    result =
+        compareNamePart(
+            a.first_name,
             b.first_name
         );
 
-
-    const firstNameComparison =
-        firstNameA.localeCompare(
-            firstNameB,
-            undefined,
-            {
-                sensitivity: "base"
-            }
-        );
+    if (result !== 0) return result;
 
 
-    if (
-        firstNameComparison !== 0
-    ) {
-
-        return firstNameComparison;
-
-    }
-
-
-    // =====================================================
-    // 3. EXTENSION
-    // =====================================================
-
-    const extensionA =
-        normalizeNamePart(
-            a.extension_name
-        );
-
-    const extensionB =
-        normalizeNamePart(
+    result =
+        compareNamePart(
+            a.extension_name,
             b.extension_name
         );
 
-
-    const extensionComparison =
-        extensionA.localeCompare(
-            extensionB,
-            undefined,
-            {
-                sensitivity: "base"
-            }
-        );
+    if (result !== 0) return result;
 
 
-    if (
-        extensionComparison !== 0
-    ) {
-
-        return extensionComparison;
-
-    }
-
-
-    // =====================================================
-    // 4. MIDDLE NAME
-    // =====================================================
-
-    const middleNameA =
-        normalizeNamePart(
-            a.middle_name
-        );
-
-    const middleNameB =
-        normalizeNamePart(
-            b.middle_name
-        );
-
-
-    return middleNameA.localeCompare(
-        middleNameB,
-        undefined,
-        {
-            sensitivity: "base"
-        }
+    return compareNamePart(
+        a.middle_name,
+        b.middle_name
     );
 
 }
 
 
-// =========================================================
-// NORMALIZE NAME PART
-// =========================================================
+function compareNamePart(a, b) {
 
-function normalizeNamePart(value) {
-
-    return String(
-        value || ""
-    )
+    return String(a || "")
         .trim()
-        .toLowerCase();
+        .toLowerCase()
+        .localeCompare(
+            String(b || "")
+                .trim()
+                .toLowerCase(),
+            undefined,
+            {
+                sensitivity: "base"
+            }
+        );
 
 }
 
 
 // =========================================================
-// RENDER STUDENTS
+// RENDER
 // =========================================================
 
 function renderStudents() {
@@ -996,73 +715,50 @@ function renderStudents() {
     updateStudentCount();
 
 
-    if (
-        filteredStudents.length === 0
-    ) {
+    if (!filteredStudents.length) {
 
-        emptyState.classList.remove(
-            "hidden"
-        );
+        emptyState.classList.remove("hidden");
 
         return;
 
     }
 
 
-    emptyState.classList.add(
-        "hidden"
-    );
+    emptyState.classList.add("hidden");
 
 
-    filteredStudents.forEach(
-        (student, index) => {
+    filteredStudents.forEach((student, index) => {
 
-            const card =
-                createStudentCard(
-                    student,
-                    index
-                );
-
-            studentsGrid.appendChild(
-                card
+        const card =
+            createStudentCard(
+                student,
+                index
             );
 
-        }
-    );
+        studentsGrid.appendChild(card);
+
+    });
 
 }
 
 
 // =========================================================
-// CREATE STUDENT CARD
+// CARD
 // =========================================================
 
-function createStudentCard(
-    student,
-    index
-) {
+function createStudentCard(student, index) {
 
     const card =
-        document.createElement(
-            "article"
-        );
+        document.createElement("article");
 
-    card.className =
-        "student-card";
+    card.className = "student-card";
 
     card.style.animationDelay =
-        `${Math.min(index * 0.04, 0.4)}s`;
+        `${Math.min(index * .04, .4)}s`;
 
-
-    // =====================================================
-    // DISPLAY NAME
-    //
-    // LAST NAME, FIRST NAME MIDDLE NAME EXTENSION
-    // =====================================================
 
     const fullName =
         buildFullName(student);
-
 
     const initials =
         getInitials(
@@ -1100,7 +796,6 @@ function createStudentCard(
 
         <div class="student-info">
 
-
             <div class="info-row">
 
                 <div class="info-icon">
@@ -1115,8 +810,7 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.email ||
-                            "N/A"
+                            student.email || "N/A"
                         )}
                     </span>
 
@@ -1139,8 +833,7 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.course ||
-                            "N/A"
+                            student.course || "N/A"
                         )}
                     </span>
 
@@ -1163,8 +856,7 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.year ||
-                            "N/A"
+                            student.year || "N/A"
                         )}
                     </span>
 
@@ -1187,8 +879,7 @@ function createStudentCard(
 
                     <span class="info-value">
                         ${escapeHTML(
-                            student.contact_number ||
-                            "N/A"
+                            student.contact_number || "N/A"
                         )}
                     </span>
 
@@ -1196,13 +887,11 @@ function createStudentCard(
 
             </div>
 
-
         </div>
 
 
         <div class="registration-time">
-            Registered:
-            ${escapeHTML(registeredDate)}
+            Registered: ${escapeHTML(registeredDate)}
         </div>
 
     `;
@@ -1214,16 +903,7 @@ function createStudentCard(
 
 
 // =========================================================
-// BUILD FULL NAME
-// =========================================================
-//
-// DISPLAY FORMAT:
-//
-// LAST NAME, FIRST NAME MIDDLE NAME EXTENSION
-//
-// Example:
-//
-// Dela Cruz, Juan Pedro Jr.
+// NAME
 // =========================================================
 
 function buildFullName(student) {
@@ -1249,42 +929,26 @@ function buildFullName(student) {
         ).trim();
 
 
-    const firstMiddleExtension =
-        [
-            firstName,
-            middleName,
-            extension
-        ]
-            .filter(Boolean)
-            .join(" ");
+    const rest = [
+        firstName,
+        middleName,
+        extension
+    ]
+        .filter(Boolean)
+        .join(" ");
 
 
-    if (
-        lastName &&
-        firstMiddleExtension
-    ) {
-
-        return (
-            `${lastName}, ` +
-            `${firstMiddleExtension}`
-        );
-
+    if (lastName && rest) {
+        return `${lastName}, ${rest}`;
     }
-
 
     if (lastName) {
-
         return lastName;
-
     }
 
-
-    if (firstMiddleExtension) {
-
-        return firstMiddleExtension;
-
+    if (rest) {
+        return rest;
     }
-
 
     return "Unnamed Student";
 
@@ -1292,23 +956,16 @@ function buildFullName(student) {
 
 
 // =========================================================
-// GET INITIALS
+// INITIALS
 // =========================================================
 
-function getInitials(
-    firstName,
-    lastName
-) {
+function getInitials(firstName, lastName) {
 
     const first =
-        String(
-            firstName || "?"
-        ).trim();
+        String(firstName || "?").trim();
 
     const last =
-        String(
-            lastName || "?"
-        ).trim();
+        String(lastName || "?").trim();
 
 
     return (
@@ -1320,15 +977,13 @@ function getInitials(
 
 
 // =========================================================
-// FORMAT DATE
+// DATE
 // =========================================================
 
 function formatDate(value) {
 
     if (!value) {
-
         return "Unknown";
-
     }
 
 
@@ -1336,14 +991,8 @@ function formatDate(value) {
         new Date(value);
 
 
-    if (
-        Number.isNaN(
-            date.getTime()
-        )
-    ) {
-
+    if (Number.isNaN(date.getTime())) {
         return "Unknown";
-
     }
 
 
@@ -1362,7 +1011,7 @@ function formatDate(value) {
 
 
 // =========================================================
-// UPDATE STUDENT COUNT
+// COUNT
 // =========================================================
 
 function updateStudentCount() {
@@ -1374,7 +1023,7 @@ function updateStudentCount() {
 
 
 // =========================================================
-// SUCCESS MODAL
+// MODAL
 // =========================================================
 
 function setupModal() {
@@ -1391,9 +1040,7 @@ function setupModal() {
 
             hideSuccessModal();
 
-            showSection(
-                "directory"
-            );
+            showSection("directory");
 
         }
     );
@@ -1401,15 +1048,10 @@ function setupModal() {
 
     successModal.addEventListener(
         "click",
-        (event) => {
+        event => {
 
-            if (
-                event.target ===
-                successModal
-            ) {
-
+            if (event.target === successModal) {
                 hideSuccessModal();
-
             }
 
         }
@@ -1418,13 +1060,11 @@ function setupModal() {
 
     document.addEventListener(
         "keydown",
-        (event) => {
+        event => {
 
             if (
                 event.key === "Escape" &&
-                successModal.classList.contains(
-                    "show"
-                )
+                successModal.classList.contains("show")
             ) {
 
                 hideSuccessModal();
@@ -1437,44 +1077,30 @@ function setupModal() {
 }
 
 
-// =========================================================
-// SHOW SUCCESS MODAL
-// =========================================================
-
 function showSuccessModal() {
 
-    successModal.classList.add(
-        "show"
-    );
+    successModal.classList.add("show");
 
     successModal.setAttribute(
         "aria-hidden",
         "false"
     );
 
-    document.body.style.overflow =
-        "hidden";
+    document.body.style.overflow = "hidden";
 
 }
 
 
-// =========================================================
-// HIDE SUCCESS MODAL
-// =========================================================
-
 function hideSuccessModal() {
 
-    successModal.classList.remove(
-        "show"
-    );
+    successModal.classList.remove("show");
 
     successModal.setAttribute(
         "aria-hidden",
         "true"
     );
 
-    document.body.style.overflow =
-        "";
+    document.body.style.overflow = "";
 
 }
 
@@ -1489,113 +1115,78 @@ function showToast(
     type = "success"
 ) {
 
-    toastTitle.textContent =
-        title;
+    toastTitle.textContent = title;
 
-    toastMessage.textContent =
-        message;
+    toastMessage.textContent = message;
 
 
-    if (
-        type === "error"
-    ) {
+    if (type === "error") {
 
-        toast.classList.add(
-            "error"
-        );
+        toast.classList.add("error");
 
-        toastIcon.textContent =
-            "!";
+        toastIcon.textContent = "!";
 
     } else {
 
-        toast.classList.remove(
-            "error"
-        );
+        toast.classList.remove("error");
 
-        toastIcon.textContent =
-            "✓";
+        toastIcon.textContent = "✓";
 
     }
 
 
-    toast.classList.add(
-        "show"
-    );
+    toast.classList.add("show");
 
 
-    clearTimeout(
-        window.toastTimer
-    );
+    clearTimeout(window.toastTimer);
 
 
     window.toastTimer =
-        setTimeout(
-            () => {
+        setTimeout(() => {
 
-                toast.classList.remove(
-                    "show"
-                );
+            toast.classList.remove("show");
 
-            },
-            4500
-        );
+        }, 4500);
 
 }
 
-
-// =========================================================
-// CLOSE TOAST
-// =========================================================
 
 toastClose.addEventListener(
     "click",
     () => {
 
-        toast.classList.remove(
-            "show"
-        );
+        toast.classList.remove("show");
 
     }
 );
 
 
 // =========================================================
-// SUPABASE ERROR MESSAGE
+// SUPABASE ERROR
 // =========================================================
 
-function getSupabaseErrorMessage(
-    error
-) {
+function getSupabaseErrorMessage(error) {
 
     if (!error) {
-
         return "Something went wrong.";
-
     }
 
 
-    if (
-        error.code === "23505"
-    ) {
+    if (error.code === "23505") {
 
         return "This student information already exists.";
 
     }
 
 
-    if (
-        error.code === "42501"
-    ) {
+    if (error.code === "42501") {
 
         return "Database permission denied. Check your Supabase RLS policies.";
 
     }
 
 
-    if (
-        error.code === "PGRST204"
-    ) {
+    if (error.code === "PGRST204") {
 
         return (
             "A database column used by the system does not exist. " +
@@ -1605,18 +1196,12 @@ function getSupabaseErrorMessage(
     }
 
 
-    if (
-        error.message
-    ) {
-
+    if (error.message) {
         return error.message;
-
     }
 
 
-    return (
-        "Something went wrong while communicating with Supabase."
-    );
+    return "Something went wrong while communicating with Supabase.";
 
 }
 
@@ -1627,28 +1212,11 @@ function getSupabaseErrorMessage(
 
 function escapeHTML(value) {
 
-    return String(
-        value ?? ""
-    )
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
 }

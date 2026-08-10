@@ -1,196 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="BSIT Student Registration and Directory System"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BSIT Student Registration and Directory System">
     <title>BSIT Student System</title>
 
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
+    <link rel="stylesheet" href="css/style.css">
 
-    <!-- SUPABASE -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-    ></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 
 <body>
 
+    <!-- BACKGROUND -->
+    <div class="bg-orb orb-one"></div>
+    <div class="bg-orb orb-two"></div>
+    <div class="bg-grid"></div>
 
-    <!-- =====================================================
-         NAVIGATION
-    ====================================================== -->
-
+    <!-- NAVBAR -->
     <nav class="navbar">
-
         <div class="nav-container">
 
             <div class="brand">
-
-                <div class="brand-icon">
-                    🎓
-                </div>
+                <div class="brand-icon">🎓</div>
 
                 <div class="brand-text">
-
-                    <strong>
-                        BSIT Student System
-                    </strong>
-
-                    <span>
-                        Student Registration
-                    </span>
-
+                    <strong>BSIT Student System</strong>
+                    <span>Student Registration Portal</span>
                 </div>
-
             </div>
 
-
             <div class="nav-links">
-
-                <button
-                    id="registerNav"
-                    class="nav-link active"
-                    type="button"
-                >
-                    <span class="nav-icon">📝</span>
+                <button id="registerNav" class="nav-link active" type="button">
+                    <span>📝</span>
                     Register
                 </button>
 
-                <button
-                    id="directoryNav"
-                    class="nav-link"
-                    type="button"
-                >
-                    <span class="nav-icon">👥</span>
-                    Student Directory
+                <button id="directoryNav" class="nav-link" type="button">
+                    <span>👥</span>
+                    Directory
                 </button>
-
             </div>
 
         </div>
-
     </nav>
 
 
-
-    <!-- =====================================================
-         MAIN
-    ====================================================== -->
-
     <main>
 
-
-        <!-- =================================================
+        <!-- =========================
              REGISTRATION
-        ================================================== -->
+        ========================== -->
 
-        <section
-            id="registrationSection"
-            class="page-section active-section"
-        >
+        <section id="registrationSection" class="page-section active-section">
 
             <div class="container">
 
-                <div class="page-header">
-
-                    <div class="header-badge">
-                        BSIT
+                <div class="hero">
+                    <div class="hero-badge">
+                        <span></span>
+                        BSIT STUDENT PORTAL
                     </div>
 
                     <h1>
-                        Student Registration
+                        Student
+                        <span>Registration</span>
                     </h1>
 
                     <p>
-                        Register your information in the
+                        Register your information securely in the
                         BSIT Student System.
                     </p>
-
                 </div>
 
 
-                <form
-                    id="studentForm"
-                    class="registration-form"
-                    autocomplete="on"
-                >
+                <form id="studentForm" class="registration-form">
 
-
-                    <!-- PERSONAL INFORMATION -->
-
+                    <!-- PERSONAL -->
                     <div class="form-section">
 
-                        <div class="form-section-header">
-
-                            <div class="section-icon">
-                                👤
-                            </div>
+                        <div class="section-heading">
+                            <div class="section-icon">👤</div>
 
                             <div>
-
-                                <h2>
-                                    Personal Information
-                                </h2>
-
-                                <p>
-                                    Enter your complete personal information.
-                                </p>
-
+                                <h2>Personal Information</h2>
+                                <p>Tell us about yourself.</p>
                             </div>
-
                         </div>
 
 
                         <div class="form-grid">
 
-
-                            <!-- FIRST NAME -->
-
                             <div class="form-group">
-
                                 <label for="firstName">
-
-                                    First Name
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    First Name <b>*</b>
                                 </label>
 
                                 <input
                                     type="text"
                                     id="firstName"
-                                    name="firstName"
-                                    placeholder="Enter first name"
+                                    placeholder="Juan"
                                     autocomplete="given-name"
                                     required
                                 >
-
                             </div>
 
 
-                            <!-- MIDDLE NAME -->
-
                             <div class="form-group">
-
                                 <label for="middleName">
                                     Middle Name
                                 </label>
@@ -198,238 +115,116 @@
                                 <input
                                     type="text"
                                     id="middleName"
-                                    name="middleName"
-                                    placeholder="Enter middle name"
+                                    placeholder="Pedro"
                                     autocomplete="additional-name"
                                 >
-
                             </div>
 
 
-                            <!-- LAST NAME -->
-
                             <div class="form-group">
-
                                 <label for="lastName">
-
-                                    Last Name
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    Last Name <b>*</b>
                                 </label>
 
                                 <input
                                     type="text"
                                     id="lastName"
-                                    name="lastName"
-                                    placeholder="Enter last name"
+                                    placeholder="Dela Cruz"
                                     autocomplete="family-name"
                                     required
                                 >
-
                             </div>
 
 
-                            <!-- EXTENSION -->
-
                             <div class="form-group">
-
                                 <label>
                                     Name Extension
                                 </label>
 
                                 <div class="extension-options">
 
-
-                                    <label class="checkbox-option">
-
-                                        <input
-                                            type="checkbox"
-                                            id="jrExtension"
-                                            value="Jr."
-                                        >
-
-                                        <span>
-                                            Jr.
-                                        </span>
-
+                                    <label class="extension-option">
+                                        <input type="checkbox" id="jrExtension" value="Jr.">
+                                        <span>Jr.</span>
                                     </label>
 
-
-                                    <label class="checkbox-option">
-
-                                        <input
-                                            type="checkbox"
-                                            id="srExtension"
-                                            value="Sr."
-                                        >
-
-                                        <span>
-                                            Sr.
-                                        </span>
-
+                                    <label class="extension-option">
+                                        <input type="checkbox" id="srExtension" value="Sr.">
+                                        <span>Sr.</span>
                                     </label>
 
-
-                                    <label class="checkbox-option">
-
-                                        <input
-                                            type="checkbox"
-                                            id="iiExtension"
-                                            value="II"
-                                        >
-
-                                        <span>
-                                            II
-                                        </span>
-
+                                    <label class="extension-option">
+                                        <input type="checkbox" id="iiExtension" value="II">
+                                        <span>II</span>
                                     </label>
 
-
-                                    <label class="checkbox-option">
-
-                                        <input
-                                            type="checkbox"
-                                            id="iiiExtension"
-                                            value="III"
-                                        >
-
-                                        <span>
-                                            III
-                                        </span>
-
+                                    <label class="extension-option">
+                                        <input type="checkbox" id="iiiExtension" value="III">
+                                        <span>III</span>
                                     </label>
 
                                 </div>
 
-                                <small>
-                                    Select only one if applicable.
-                                </small>
-
+                                <small>Select one if applicable.</small>
                             </div>
 
 
-                            <!-- GENDER -->
-
                             <div class="form-group">
-
                                 <label for="gender">
-
-                                    Gender
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    Gender <b>*</b>
                                 </label>
 
-                                <select
-                                    id="gender"
-                                    name="gender"
-                                    required
-                                >
-
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
+                                <select id="gender" required>
+                                    <option value="" disabled selected>
                                         Select gender
                                     </option>
 
-                                    <option value="Male">
-                                        Male
-                                    </option>
-
-                                    <option value="Female">
-                                        Female
-                                    </option>
-
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
                                 </select>
-
                             </div>
 
 
-                            <!-- BIRTHDAY -->
-
                             <div class="form-group">
-
                                 <label for="birthday">
-
-                                    Birthday
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    Birthday <b>*</b>
                                 </label>
 
                                 <input
                                     type="date"
                                     id="birthday"
-                                    name="birthday"
                                     required
                                 >
-
                             </div>
 
                         </div>
-
                     </div>
 
 
-
-                    <!-- =================================================
-                         CONTACT INFORMATION
-                    ================================================== -->
-
+                    <!-- CONTACT -->
                     <div class="form-section">
 
-                        <div class="form-section-header">
-
-                            <div class="section-icon">
-                                📱
-                            </div>
+                        <div class="section-heading">
+                            <div class="section-icon">📱</div>
 
                             <div>
-
-                                <h2>
-                                    Contact Information
-                                </h2>
-
-                                <p>
-                                    Enter your contact details.
-                                </p>
-
+                                <h2>Contact Information</h2>
+                                <p>How can we reach you?</p>
                             </div>
-
                         </div>
 
 
                         <div class="form-grid">
 
-
-                            <!-- GMAIL -->
-
                             <div class="form-group">
-
                                 <label for="email">
-
-                                    Gmail Address
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    Gmail Address <b>*</b>
                                 </label>
 
                                 <input
                                     type="email"
                                     id="email"
-                                    name="email"
-                                    placeholder="example@gmail.com"
+                                    placeholder="yourname@gmail.com"
                                     autocomplete="email"
                                     required
                                 >
@@ -437,164 +232,81 @@
                                 <small>
                                     A Gmail address is required.
                                 </small>
-
                             </div>
 
 
-                            <!-- CONTACT NUMBER -->
-
                             <div class="form-group">
-
                                 <label for="contactNumber">
-
-                                    Contact Number
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    Contact Number <b>*</b>
                                 </label>
 
                                 <input
                                     type="tel"
                                     id="contactNumber"
-                                    name="contactNumber"
                                     placeholder="09XXXXXXXXX"
                                     autocomplete="tel"
                                     required
                                 >
-
                             </div>
 
                         </div>
-
                     </div>
 
 
-
-                    <!-- =================================================
-                         STUDENT INFORMATION
-                    ================================================== -->
-
+                    <!-- ACADEMIC -->
                     <div class="form-section">
 
-                        <div class="form-section-header">
-
-                            <div class="section-icon">
-                                🎓
-                            </div>
+                        <div class="section-heading">
+                            <div class="section-icon">🎓</div>
 
                             <div>
-
-                                <h2>
-                                    Student Information
-                                </h2>
-
-                                <p>
-                                    Enter your academic information.
-                                </p>
-
+                                <h2>Student Information</h2>
+                                <p>Your academic details.</p>
                             </div>
-
                         </div>
 
 
                         <div class="form-grid">
 
-
-                            <!-- COURSE -->
-
                             <div class="form-group">
-
                                 <label for="course">
-
-                                    Course
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    Course <b>*</b>
                                 </label>
 
-                                <select
-                                    id="course"
-                                    name="course"
-                                    required
-                                >
-
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
+                                <select id="course" required>
+                                    <option value="" disabled selected>
                                         Select course
                                     </option>
 
                                     <option value="BSIT">
                                         BS Information Technology
                                     </option>
-
                                 </select>
-
                             </div>
 
 
-                            <!-- YEAR -->
-
                             <div class="form-group">
-
                                 <label for="year">
-
-                                    Year Level
-
-                                    <span class="required">
-                                        *
-                                    </span>
-
+                                    Year Level <b>*</b>
                                 </label>
 
-                                <select
-                                    id="year"
-                                    name="year"
-                                    required
-                                >
-
-                                    <option
-                                        value=""
-                                        selected
-                                        disabled
-                                    >
+                                <select id="year" required>
+                                    <option value="" disabled selected>
                                         Select year level
                                     </option>
 
-                                    <option value="1st Year">
-                                        1st Year
-                                    </option>
-
-                                    <option value="2nd Year">
-                                        2nd Year
-                                    </option>
-
-                                    <option value="3rd Year">
-                                        3rd Year
-                                    </option>
-
-                                    <option value="4th Year">
-                                        4th Year
-                                    </option>
-
+                                    <option value="1st Year">1st Year</option>
+                                    <option value="2nd Year">2nd Year</option>
+                                    <option value="3rd Year">3rd Year</option>
+                                    <option value="4th Year">4th Year</option>
                                 </select>
-
                             </div>
 
                         </div>
-
                     </div>
 
 
-
-                    <!-- FORM ACTION -->
-
+                    <!-- ACTION -->
                     <div class="form-actions">
 
                         <button
@@ -602,7 +314,6 @@
                             id="submitButton"
                             class="primary-button"
                         >
-
                             <span id="submitText">
                                 Register Student
                             </span>
@@ -611,7 +322,6 @@
                                 id="loadingSpinner"
                                 class="loading-spinner"
                             ></span>
-
                         </button>
 
                     </div>
@@ -619,83 +329,57 @@
                 </form>
 
             </div>
-
         </section>
 
 
-
-        <!-- =================================================
+        <!-- =========================
              DIRECTORY
-        ================================================== -->
+        ========================== -->
 
-        <section
-            id="directorySection"
-            class="page-section"
-        >
+        <section id="directorySection" class="page-section">
 
             <div class="container">
 
+                <div class="directory-top">
 
-                <div class="directory-header">
-
-                    <div class="directory-heading">
-
-                        <div class="header-badge">
-                            DIRECTORY
+                    <div>
+                        <div class="hero-badge">
+                            <span></span>
+                            STUDENT DIRECTORY
                         </div>
 
-                        <h1>
-                            Student Directory
-                        </h1>
+                        <h1>BSIT Students</h1>
 
                         <p>
-                            Browse all registered BSIT students.
+                            Browse registered students.
                         </p>
-
                     </div>
 
-
-                    <div class="student-count-box">
-
-                        <strong id="studentCount">
-                            0
-                        </strong>
-
-                        <span>
-                            Students
-                        </span>
-
+                    <div class="count-card">
+                        <strong id="studentCount">0</strong>
+                        <span>Students</span>
                     </div>
 
                 </div>
 
 
-
                 <!-- SEARCH -->
+                <div class="directory-tools">
 
-                <div class="directory-controls">
+                    <div class="search-box">
 
-                    <div class="search-wrapper">
-
-                        <span
-                            class="search-icon"
-                            aria-hidden="true"
-                        >
-                            🔍
-                        </span>
+                        <span>⌕</span>
 
                         <input
                             type="search"
                             id="searchInput"
-                            placeholder="Search by name, Gmail, or contact number..."
+                            placeholder="Search name, Gmail, course, or contact..."
                             autocomplete="off"
                         >
 
                         <button
-                            type="button"
                             id="clearSearch"
-                            class="clear-search"
-                            aria-label="Clear search"
+                            type="button"
                         >
                             ×
                         </button>
@@ -704,208 +388,118 @@
 
 
                     <button
-                        type="button"
                         id="refreshButton"
                         class="refresh-button"
+                        type="button"
                     >
-
-                        <span class="refresh-icon">
-                            ↻
-                        </span>
-
-                        <span>
-                            Refresh
-                        </span>
-
+                        <span class="refresh-icon">↻</span>
+                        Refresh
                     </button>
 
                 </div>
 
 
+                <!-- SORT -->
+                <div class="sort-banner">
+                    <div class="sort-icon">A–Z</div>
 
-                <!-- SORT INFORMATION -->
-
-                <div class="directory-sort-info">
-
-                    <div class="sort-label">
-                        A–Z
-                    </div>
-
-                    <div class="sort-description">
-
-                        Automatically sorted by
-
-                        <strong>
-                            Last Name → First Name → Extension → Middle Name
-                        </strong>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- STUDENTS -->
-
-                <div
-                    id="studentsGrid"
-                    class="students-grid"
-                >
-
-                    <div
-                        id="directoryLoading"
-                        class="directory-loading"
-                    >
-
-                        <div class="loading-spinner active"></div>
+                    <div>
+                        <strong>Automatic sorting</strong>
 
                         <span>
-                            Loading students...
+                            Last Name → First Name → Extension → Middle Name
                         </span>
+                    </div>
+                </div>
 
+
+                <!-- GRID -->
+                <div id="studentsGrid" class="students-grid">
+
+                    <div id="directoryLoading" class="directory-loading">
+                        <div class="loading-spinner active"></div>
+                        Loading students...
                     </div>
 
                 </div>
 
 
+                <!-- EMPTY -->
+                <div id="emptyState" class="empty-state hidden">
 
-                <!-- EMPTY STATE -->
+                    <div class="empty-icon">🎓</div>
 
-                <div
-                    id="emptyState"
-                    class="empty-state hidden"
-                >
-
-                    <div class="empty-icon">
-                        🎓
-                    </div>
-
-                    <h3>
-                        No students found
-                    </h3>
+                    <h3>No students found</h3>
 
                     <p>
-                        There are currently no students
-                        matching your search.
+                        No students match your search.
                     </p>
 
                 </div>
 
             </div>
-
         </section>
 
     </main>
 
 
-
-    <!-- =====================================================
-         SUCCESS MODAL
-    ====================================================== -->
-
-    <div
-        id="successModal"
-        class="modal"
-        aria-hidden="true"
-    >
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="modal">
 
         <div class="modal-content">
 
-            <button
-                id="modalClose"
-                class="modal-close"
-                type="button"
-                aria-label="Close"
-            >
+            <button id="modalClose" class="modal-close">
                 ×
             </button>
-
 
             <div class="success-icon">
                 ✓
             </div>
 
+            <div class="modal-badge">
+                SUCCESS
+            </div>
 
-            <h2>
-                Registration Successful!
-            </h2>
-
+            <h2>Registration Complete</h2>
 
             <p>
-
-                <strong id="registeredStudentName">
-                </strong>
-
+                <strong id="registeredStudentName"></strong>
                 has been successfully registered.
-
             </p>
-
 
             <button
                 id="modalDirectoryButton"
                 class="primary-button"
                 type="button"
             >
-                View Student Directory
+                View Directory
             </button>
 
         </div>
-
     </div>
 
 
+    <!-- TOAST -->
+    <div id="toast" class="toast">
 
-    <!-- =====================================================
-         TOAST
-    ====================================================== -->
-
-    <div
-        id="toast"
-        class="toast"
-        role="alert"
-    >
-
-        <div
-            id="toastIcon"
-            class="toast-icon"
-        >
+        <div id="toastIcon" class="toast-icon">
             ✓
         </div>
 
-
         <div class="toast-content">
-
-            <strong id="toastTitle">
-                Success
-            </strong>
-
+            <strong id="toastTitle">Success</strong>
             <span id="toastMessage">
                 Operation completed.
             </span>
-
         </div>
 
-
-        <button
-            id="toastClose"
-            type="button"
-            aria-label="Close notification"
-        >
-            ×
-        </button>
+        <button id="toastClose">×</button>
 
     </div>
 
 
-
-    <!-- =====================================================
-         SCRIPTS
-    ====================================================== -->
-
     <script src="js/config.js"></script>
-
     <script src="js/students.js"></script>
 
 </body>
-
 </html>
