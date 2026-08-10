@@ -1,3 +1,7 @@
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -6,18 +10,33 @@
 
 :root {
     --blue: #2563eb;
-    --blue-dark: #1746b0;
+    --blue-dark: #1d4ed8;
     --cyan: #06b6d4;
 
-    --text: #102a43;
+    --text: #0f2742;
+    --text-soft: #35516d;
     --muted: #64748b;
     --light: #94a3b8;
 
     --border: #dbe7f3;
+
     --white: #ffffff;
+
+    --blue-soft: #eff6ff;
+    --cyan-soft: #ecfeff;
+
+    --shadow-sm:
+        0 8px 25px rgba(30, 64, 175, .05);
 
     --shadow:
         0 20px 60px rgba(30, 64, 175, .08);
+
+    --shadow-lg:
+        0 30px 80px rgba(30, 64, 175, .13);
+
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 24px;
 }
 
 html {
@@ -38,9 +57,19 @@ body {
     color: var(--text);
 
     background:
+        radial-gradient(
+            circle at 10% 5%,
+            rgba(147, 197, 253, .22),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 45%,
+            rgba(103, 232, 249, .16),
+            transparent 30%
+        ),
         linear-gradient(
             135deg,
-            #f7fbff,
+            #f8fbff,
             #eef7ff 45%,
             #ffffff
         );
@@ -59,9 +88,9 @@ button {
 }
 
 
-/* ================================
+/* =========================================================
    BACKGROUND
-================================ */
+========================================================= */
 
 .bg-grid {
     position: fixed;
@@ -69,7 +98,7 @@ button {
 
     pointer-events: none;
 
-    opacity: .28;
+    opacity: .38;
 
     background-image:
         linear-gradient(
@@ -82,13 +111,13 @@ button {
             transparent 1px
         );
 
-    background-size: 40px 40px;
+    background-size: 42px 42px;
 
     mask-image:
         linear-gradient(
             to bottom,
             black,
-            transparent 75%
+            transparent 80%
         );
 
     z-index: -2;
@@ -97,38 +126,38 @@ button {
 .bg-orb {
     position: fixed;
 
-    width: 400px;
-    height: 400px;
+    width: 450px;
+    height: 450px;
 
     border-radius: 50%;
 
-    filter: blur(80px);
+    filter: blur(100px);
 
     pointer-events: none;
 
     z-index: -3;
 
-    opacity: .45;
+    opacity: .38;
 }
 
 .orb-one {
-    top: -180px;
-    left: -150px;
+    top: -220px;
+    left: -170px;
 
     background: #93c5fd;
 }
 
 .orb-two {
-    right: -180px;
-    top: 35%;
+    right: -220px;
+    top: 30%;
 
     background: #67e8f9;
 }
 
 
-/* ================================
+/* =========================================================
    NAVBAR
-================================ */
+========================================================= */
 
 .navbar {
     position: sticky;
@@ -138,24 +167,25 @@ button {
     z-index: 1000;
 
     background:
-        rgba(255,255,255,.78);
+        rgba(255, 255, 255, .76);
 
     border-bottom:
         1px solid
-        rgba(148,163,184,.2);
+        rgba(148, 163, 184, .18);
 
-    backdrop-filter: blur(22px);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
 
     box-shadow:
-        0 10px 35px
-        rgba(30,64,175,.05);
+        0 10px 40px
+        rgba(30, 64, 175, .045);
 }
 
 .nav-container {
     width:
         min(1180px, calc(100% - 32px));
 
-    min-height: 78px;
+    min-height: 76px;
 
     margin: auto;
 
@@ -177,8 +207,8 @@ button {
 }
 
 .brand-icon {
-    width: 46px;
-    height: 46px;
+    width: 45px;
+    height: 45px;
 
     display: grid;
 
@@ -195,11 +225,17 @@ button {
 
     color: white;
 
-    font-size: 21px;
+    font-size: 20px;
 
     box-shadow:
         0 10px 25px
-        rgba(37,99,235,.25);
+        rgba(37, 99, 235, .22);
+
+    transition: .25s ease;
+}
+
+.brand:hover .brand-icon {
+    transform: rotate(-4deg) scale(1.04);
 }
 
 .brand-text {
@@ -219,25 +255,34 @@ button {
 .brand-text span {
     color: #7890a8;
 
-    font-size: 11px;
+    font-size: 10px;
+
+    font-weight: 600;
 }
 
 .nav-links {
     display: flex;
 
-    gap: 5px;
+    gap: 4px;
 
     padding: 5px;
 
-    border-radius: 15px;
+    border-radius: 16px;
 
-    background: #f3f7fb;
+    background:
+        rgba(241, 245, 249, .85);
+
+    border:
+        1px solid
+        rgba(226, 232, 240, .8);
 }
 
 .nav-link {
+    position: relative;
+
     border: none;
 
-    border-radius: 11px;
+    border-radius: 12px;
 
     padding: 10px 15px;
 
@@ -251,17 +296,22 @@ button {
 
     background: transparent;
 
-    font-size: 13px;
+    font-size: 12px;
 
-    font-weight: 700;
+    font-weight: 800;
 
-    transition: .2s ease;
+    transition:
+        color .25s ease,
+        background .25s ease,
+        transform .25s ease;
 }
 
 .nav-link:hover {
     color: var(--blue);
 
     background: #eaf2ff;
+
+    transform: translateY(-1px);
 }
 
 .nav-link.active {
@@ -275,14 +325,14 @@ button {
         );
 
     box-shadow:
-        0 6px 16px
-        rgba(37,99,235,.2);
+        0 7px 18px
+        rgba(37, 99, 235, .2);
 }
 
 
-/* ================================
-   CONTAINER
-================================ */
+/* =========================================================
+   PAGE CONTAINER
+========================================================= */
 
 .container {
     width:
@@ -291,44 +341,120 @@ button {
     margin: auto;
 }
 
+
+/*
+    IMPORTANT:
+
+    Sections stay mounted.
+
+    This allows the JS to animate:
+    opacity + transform + blur
+    instead of instantly switching display:none.
+*/
+
 .page-section {
-    display: none;
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    top: 76px;
 
     min-height:
-        calc(100vh - 78px);
+        calc(100vh - 76px);
 
     padding:
-        60px 0 90px;
+        58px 0 90px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translateY(18px)
+        scale(.985);
+
+    filter: blur(3px);
+
+    transition:
+        opacity .38s ease,
+        transform .42s cubic-bezier(.22, .8, .25, 1),
+        filter .38s ease,
+        visibility 0s linear .42s;
 }
 
 .page-section.active-section {
-    display: block;
+    position: relative;
 
+    top: auto;
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    filter: blur(0);
+
+    transition:
+        opacity .38s ease,
+        transform .42s cubic-bezier(.22, .8, .25, 1),
+        filter .38s ease,
+        visibility 0s linear 0s;
+}
+
+
+/* =========================================================
+   SECTION SWITCHING
+========================================================= */
+
+.page-section.section-enter {
     animation:
-        pageIn .4s ease;
+        sectionEnter .45s cubic-bezier(.22, .8, .25, 1) both;
 }
 
-@keyframes pageIn {
-    from {
+@keyframes sectionEnter {
+
+    0% {
         opacity: 0;
-        transform: translateY(15px);
+
+        transform:
+            translateY(22px)
+            scale(.98);
+
+        filter: blur(4px);
     }
 
-    to {
+    65% {
         opacity: 1;
-        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translateY(0)
+            scale(1);
+
+        filter: blur(0);
     }
 }
 
 
-/* ================================
+/* =========================================================
    HERO
-================================ */
+========================================================= */
 
 .hero {
     text-align: center;
 
-    max-width: 700px;
+    max-width: 720px;
 
     margin:
         0 auto 45px;
@@ -348,19 +474,20 @@ button {
 
     color: var(--blue);
 
-    background: #eaf2ff;
+    background:
+        rgba(239, 246, 255, .85);
 
     border:
         1px solid
         #d5e5ff;
 
-    font-size: 10px;
+    font-size: 9px;
 
     font-weight: 900;
 
-    letter-spacing: .12em;
+    letter-spacing: .13em;
 
-    margin-bottom: 14px;
+    margin-bottom: 15px;
 }
 
 .hero-badge span {
@@ -373,20 +500,20 @@ button {
 
     box-shadow:
         0 0 0 4px
-        rgba(34,197,94,.12);
+        rgba(34, 197, 94, .11);
 }
 
 .hero h1 {
     font-size:
-        clamp(38px, 6vw, 58px);
+        clamp(40px, 6vw, 60px);
 
-    line-height: 1;
+    line-height: .98;
 
-    letter-spacing: -.055em;
+    letter-spacing: -.06em;
 
     color: #102f55;
 
-    margin-bottom: 15px;
+    margin-bottom: 17px;
 }
 
 .hero h1 span {
@@ -406,22 +533,26 @@ button {
 .hero p {
     color: var(--muted);
 
-    font-size: 15px;
+    font-size: 14px;
 
-    line-height: 1.7;
+    line-height: 1.8;
+
+    max-width: 560px;
+
+    margin: auto;
 }
 
 
-/* ================================
+/* =========================================================
    FORM
-================================ */
+========================================================= */
 
 .registration-form {
     display: flex;
 
     flex-direction: column;
 
-    gap: 20px;
+    gap: 18px;
 }
 
 .form-section {
@@ -431,28 +562,27 @@ button {
 
     border:
         1px solid
-        rgba(255,255,255,.9);
+        rgba(255, 255, 255, .9);
 
-    border-radius: 24px;
+    border-radius: var(--radius-lg);
 
     background:
-        rgba(255,255,255,.76);
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .88),
+            rgba(255, 255, 255, .68)
+        );
 
     box-shadow: var(--shadow);
 
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
 
     overflow: hidden;
 
-    transition: .25s ease;
-}
-
-.form-section:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 25px 70px
-        rgba(30,64,175,.11);
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
 }
 
 .form-section::before {
@@ -472,6 +602,13 @@ button {
             var(--blue),
             var(--cyan)
         );
+}
+
+.form-section:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        var(--shadow-lg);
 }
 
 .section-heading {
@@ -501,11 +638,11 @@ button {
             #e0f7ff
         );
 
-    font-size: 20px;
+    font-size: 19px;
 }
 
 .section-heading h2 {
-    font-size: 18px;
+    font-size: 17px;
 
     color: #173b68;
 
@@ -515,16 +652,16 @@ button {
 .section-heading p {
     color: #8aa0b7;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .form-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(2, minmax(0,1fr));
+        repeat(2, minmax(0, 1fr));
 
-    gap: 20px;
+    gap: 19px;
 }
 
 .form-group {
@@ -538,7 +675,7 @@ button {
 .form-group label {
     color: #334e68;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 800;
 }
@@ -551,7 +688,7 @@ button {
 .form-group select {
     width: 100%;
 
-    min-height: 50px;
+    min-height: 51px;
 
     padding:
         0 15px;
@@ -567,9 +704,13 @@ button {
     color: #173b68;
 
     background:
-        rgba(255,255,255,.8);
+        rgba(255, 255, 255, .78);
 
-    transition: .2s ease;
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease,
+        transform .2s ease;
 }
 
 .form-group input::placeholder {
@@ -579,6 +720,8 @@ button {
 .form-group input:hover,
 .form-group select:hover {
     border-color: #b7cbe0;
+
+    background: white;
 }
 
 .form-group input:focus,
@@ -589,22 +732,26 @@ button {
 
     box-shadow:
         0 0 0 4px
-        rgba(59,130,246,.1);
+        rgba(59, 130, 246, .1),
+        0 7px 20px
+        rgba(37, 99, 235, .04);
+
+    transform: translateY(-1px);
 }
 
 .form-group small {
     color: #94a3b8;
 
-    font-size: 10px;
+    font-size: 9px;
 }
 
 
-/* ================================
+/* =========================================================
    EXTENSIONS
-================================ */
+========================================================= */
 
 .extension-options {
-    min-height: 50px;
+    min-height: 51px;
 
     display: flex;
 
@@ -633,7 +780,7 @@ button {
 
     border-radius: 11px;
 
-    background: white;
+    background: rgba(255, 255, 255, .82);
 
     cursor: pointer;
 
@@ -644,6 +791,8 @@ button {
     border-color: #93c5fd;
 
     background: #f7fbff;
+
+    transform: translateY(-1px);
 }
 
 .extension-option input {
@@ -658,29 +807,29 @@ button {
 .extension-option span {
     color: #486581;
 
-    font-size: 12px;
+    font-size: 11px;
 
     font-weight: 800;
 }
 
 
-/* ================================
+/* =========================================================
    BUTTON
-================================ */
+========================================================= */
 
 .form-actions {
     display: flex;
 
     justify-content: center;
 
-    padding-top: 5px;
+    padding-top: 6px;
 }
 
 .primary-button {
     min-height: 52px;
 
     padding:
-        0 27px;
+        0 28px;
 
     border: none;
 
@@ -695,13 +844,13 @@ button {
             #0ea5e9
         );
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 900;
 
     box-shadow:
         0 14px 30px
-        rgba(37,99,235,.24);
+        rgba(37, 99, 235, .22);
 
     display: inline-flex;
 
@@ -711,15 +860,17 @@ button {
 
     gap: 10px;
 
-    transition: .2s ease;
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
 .primary-button:hover {
     transform: translateY(-3px);
 
     box-shadow:
-        0 18px 35px
-        rgba(37,99,235,.3);
+        0 19px 38px
+        rgba(37, 99, 235, .28);
 }
 
 .primary-button:active {
@@ -730,12 +881,14 @@ button {
     opacity: .6;
 
     transform: none;
+
+    cursor: not-allowed;
 }
 
 
-/* ================================
+/* =========================================================
    SPINNER
-================================ */
+========================================================= */
 
 .loading-spinner {
     display: none;
@@ -745,7 +898,7 @@ button {
 
     border:
         2px solid
-        rgba(255,255,255,.35);
+        rgba(255, 255, 255, .35);
 
     border-top-color: white;
 
@@ -766,9 +919,9 @@ button {
 }
 
 
-/* ================================
+/* =========================================================
    DIRECTORY
-================================ */
+========================================================= */
 
 .directory-top {
     display: flex;
@@ -779,48 +932,47 @@ button {
 
     gap: 20px;
 
-    margin-bottom: 28px;
+    margin-bottom: 27px;
 }
 
 .directory-top h1 {
     font-size:
-        clamp(36px,5vw,50px);
+        clamp(38px, 5vw, 52px);
 
     line-height: 1;
 
-    letter-spacing: -.05em;
+    letter-spacing: -.055em;
 
     color: #102f55;
 
-    margin-bottom: 10px;
+    margin-bottom: 9px;
 }
 
 .directory-top p {
     color: var(--muted);
 
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .count-card {
-    min-width: 125px;
+    min-width: 135px;
 
     padding:
-        18px 24px;
+        17px 24px;
 
     text-align: center;
 
     border-radius: 19px;
 
     background:
-        rgba(255,255,255,.8);
+        rgba(255, 255, 255, .78);
 
     border:
         1px solid
-        rgba(255,255,255,.9);
+        rgba(255, 255, 255, .95);
 
     box-shadow:
-        0 15px 40px
-        rgba(30,64,175,.08);
+        var(--shadow-sm);
 }
 
 .count-card strong {
@@ -836,22 +988,106 @@ button {
 .count-card span {
     color: #8aa0b7;
 
-    font-size: 10px;
+    font-size: 9px;
 
-    font-weight: 700;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
 }
 
 
-/* ================================
-   SEARCH
-================================ */
+/* =========================================================
+   DIRECTORY STATS
+========================================================= */
+
+.directory-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 15px;
+}
+
+.stat-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 17px;
+
+    border-radius: 17px;
+
+    background:
+        rgba(255, 255, 255, .75);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, .95);
+
+    box-shadow:
+        var(--shadow-sm);
+}
+
+.stat-icon {
+    width: 39px;
+    height: 39px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #edf5ff,
+            #ecfeff
+        );
+
+    font-size: 16px;
+}
+
+.stat-card strong {
+    display: block;
+
+    color: #173b68;
+
+    font-size: 18px;
+}
+
+.stat-card span {
+    display: block;
+
+    color: #94a3b8;
+
+    font-size: 8px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .07em;
+}
+
+
+/* =========================================================
+   SEARCH / SORT
+========================================================= */
 
 .directory-tools {
     display: flex;
 
     gap: 10px;
 
-    margin-bottom: 14px;
+    margin-bottom: 13px;
 }
 
 .search-box {
@@ -866,11 +1102,12 @@ button {
     left: 16px;
     top: 50%;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     color: #64748b;
 
-    font-size: 22px;
+    font-size: 21px;
 
     pointer-events: none;
 }
@@ -892,21 +1129,25 @@ button {
     outline: none;
 
     background:
-        rgba(255,255,255,.82);
+        rgba(255, 255, 255, .82);
 
     color: var(--text);
 
     box-shadow:
-        0 10px 30px
-        rgba(30,64,175,.04);
+        var(--shadow-sm);
+
+    transition: .2s ease;
 }
 
 .search-box input:focus {
     border-color: #60a5fa;
 
+    background: white;
+
     box-shadow:
         0 0 0 4px
-        rgba(59,130,246,.08);
+        rgba(59, 130, 246, .08),
+        var(--shadow-sm);
 }
 
 .search-box button {
@@ -915,7 +1156,8 @@ button {
     right: 9px;
     top: 50%;
 
-    transform: translateY(-50%);
+    transform:
+        translateY(-50%);
 
     width: 32px;
     height: 32px;
@@ -932,12 +1174,72 @@ button {
 
     color: #64748b;
 
-    font-size: 20px;
+    font-size: 19px;
 }
 
 .search-box button.visible {
     display: grid;
 }
+
+
+/* =========================================================
+   SORT CONTROL
+========================================================= */
+
+.sort-control {
+    height: 52px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0 12px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius: 15px;
+
+    background:
+        rgba(255, 255, 255, .8);
+
+    box-shadow:
+        var(--shadow-sm);
+}
+
+.sort-control label {
+    color: #94a3b8;
+
+    font-size: 10px;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+}
+
+.sort-control select {
+    border: none;
+
+    outline: none;
+
+    color: #365b83;
+
+    background: transparent;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   REFRESH
+========================================================= */
 
 .refresh-button {
     height: 52px;
@@ -958,13 +1260,16 @@ button {
     border-radius: 15px;
 
     background:
-        rgba(255,255,255,.8);
+        rgba(255, 255, 255, .8);
 
     color: var(--blue);
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: 800;
+
+    box-shadow:
+        var(--shadow-sm);
 
     transition: .2s ease;
 }
@@ -975,12 +1280,11 @@ button {
     transform: translateY(-2px);
 
     box-shadow:
-        0 10px 25px
-        rgba(30,64,175,.08);
+        var(--shadow);
 }
 
 .refresh-icon {
-    font-size: 19px;
+    font-size: 18px;
 }
 
 .refresh-button.refreshing .refresh-icon {
@@ -989,9 +1293,9 @@ button {
 }
 
 
-/* ================================
-   SORT
-================================ */
+/* =========================================================
+   SORT BANNER
+========================================================= */
 
 .sort-banner {
     display: flex;
@@ -1001,7 +1305,7 @@ button {
     gap: 12px;
 
     padding:
-        12px 14px;
+        11px 14px;
 
     margin-bottom: 20px;
 
@@ -1010,8 +1314,8 @@ button {
     background:
         linear-gradient(
             135deg,
-            #eff6ff,
-            #f0faff
+            rgba(239, 246, 255, .9),
+            rgba(240, 250, 255, .9)
         );
 
     border:
@@ -1027,9 +1331,14 @@ button {
 
     color: white;
 
-    background: var(--blue);
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            #0ea5e9
+        );
 
-    font-size: 10px;
+    font-size: 9px;
 
     font-weight: 900;
 }
@@ -1039,7 +1348,7 @@ button {
 
     color: #365b83;
 
-    font-size: 11px;
+    font-size: 10px;
 }
 
 .sort-banner span {
@@ -1047,21 +1356,21 @@ button {
 
     color: #7890a8;
 
-    font-size: 10px;
+    font-size: 9px;
 
     margin-top: 2px;
 }
 
 
-/* ================================
+/* =========================================================
    STUDENT GRID
-================================ */
+========================================================= */
 
 .students-grid {
     display: grid;
 
     grid-template-columns:
-        repeat(2,minmax(0,1fr));
+        repeat(2, minmax(0, 1fr));
 
     gap: 17px;
 }
@@ -1069,27 +1378,33 @@ button {
 .student-card {
     position: relative;
 
-    padding: 21px;
+    padding: 22px;
 
     border-radius: 21px;
 
     border:
         1px solid
-        rgba(255,255,255,.95);
+        rgba(255, 255, 255, .95);
 
     background:
-        rgba(255,255,255,.8);
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, .9),
+            rgba(255, 255, 255, .72)
+        );
 
     box-shadow:
-        0 15px 45px
-        rgba(30,64,175,.07);
+        var(--shadow-sm);
 
-    backdrop-filter: blur(15px);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
 
     animation:
         cardIn .4s ease both;
 
-    transition: .25s ease;
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
 
     overflow: hidden;
 }
@@ -1112,7 +1427,7 @@ button {
             var(--cyan)
         );
 
-    opacity: .7;
+    opacity: .75;
 }
 
 .student-card:hover {
@@ -1120,23 +1435,25 @@ button {
         translateY(-5px);
 
     box-shadow:
-        0 25px 60px
-        rgba(30,64,175,.13);
+        var(--shadow-lg);
 }
 
 @keyframes cardIn {
+
     from {
         opacity: 0;
 
         transform:
-            translateY(12px);
+            translateY(12px)
+            scale(.98);
     }
 
     to {
         opacity: 1;
 
         transform:
-            translateY(0);
+            translateY(0)
+            scale(1);
     }
 }
 
@@ -1151,8 +1468,8 @@ button {
 }
 
 .student-avatar {
-    width: 50px;
-    height: 50px;
+    width: 51px;
+    height: 51px;
 
     display: grid;
 
@@ -1171,23 +1488,23 @@ button {
             var(--cyan)
         );
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 900;
 
     box-shadow:
         0 9px 20px
-        rgba(37,99,235,.2);
+        rgba(37, 99, 235, .2);
 }
 
 .student-name {
     color: #173b68;
 
-    font-size: 16px;
+    font-size: 15px;
 
     font-weight: 900;
 
-    line-height: 1.3;
+    line-height: 1.35;
 
     word-break: break-word;
 }
@@ -1197,7 +1514,7 @@ button {
 
     flex-direction: column;
 
-    gap: 10px;
+    gap: 9px;
 }
 
 .info-row {
@@ -1220,9 +1537,14 @@ button {
 
     border-radius: 9px;
 
-    background: #f1f7ff;
+    background:
+        linear-gradient(
+            135deg,
+            #f1f7ff,
+            #effcff
+        );
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 .info-text {
@@ -1238,11 +1560,11 @@ button {
 .info-label {
     color: #9aaabd;
 
-    font-size: 8px;
+    font-size: 7px;
 
     font-weight: 900;
 
-    letter-spacing: .09em;
+    letter-spacing: .1em;
 
     text-transform: uppercase;
 }
@@ -1250,7 +1572,7 @@ button {
 .info-value {
     color: #486581;
 
-    font-size: 12px;
+    font-size: 11px;
 
     word-break: break-word;
 }
@@ -1266,18 +1588,18 @@ button {
 
     color: #9aaabd;
 
-    font-size: 9px;
+    font-size: 8px;
 }
 
 
-/* ================================
+/* =========================================================
    LOADING
-================================ */
+========================================================= */
 
 .directory-loading {
     grid-column: 1 / -1;
 
-    min-height: 180px;
+    min-height: 190px;
 
     display: flex;
 
@@ -1289,18 +1611,19 @@ button {
 
     color: #7890a8;
 
-    font-size: 13px;
+    font-size: 12px;
 }
 
 
-/* ================================
+/* =========================================================
    EMPTY
-================================ */
+========================================================= */
 
 .empty-state {
     text-align: center;
 
-    padding: 65px 20px;
+    padding:
+        65px 20px;
 }
 
 .empty-state.hidden {
@@ -1311,7 +1634,8 @@ button {
     width: 70px;
     height: 70px;
 
-    margin: 0 auto 16px;
+    margin:
+        0 auto 16px;
 
     display: grid;
 
@@ -1319,15 +1643,20 @@ button {
 
     border-radius: 22px;
 
-    background: #edf5ff;
+    background:
+        linear-gradient(
+            135deg,
+            #edf5ff,
+            #ecfeff
+        );
 
-    font-size: 28px;
+    font-size: 27px;
 }
 
 .empty-state h3 {
     color: #365b83;
 
-    font-size: 18px;
+    font-size: 17px;
 
     margin-bottom: 7px;
 }
@@ -1335,13 +1664,13 @@ button {
 .empty-state p {
     color: #8aa0b7;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 
-/* ================================
+/* =========================================================
    MODAL
-================================ */
+========================================================= */
 
 .modal {
     position: fixed;
@@ -1359,9 +1688,9 @@ button {
     padding: 20px;
 
     background:
-        rgba(15,35,60,.4);
+        rgba(15, 35, 60, .42);
 
-    backdrop-filter: blur(9px);
+    backdrop-filter: blur(10px);
 
     opacity: 0;
 
@@ -1380,20 +1709,20 @@ button {
     position: relative;
 
     width:
-        min(430px,100%);
+        min(430px, 100%);
 
-    padding: 35px;
+    padding: 36px;
 
     text-align: center;
 
-    border-radius: 26px;
+    border-radius: 27px;
 
     background:
-        rgba(255,255,255,.97);
+        rgba(255, 255, 255, .97);
 
     box-shadow:
         0 35px 90px
-        rgba(15,35,60,.2);
+        rgba(15, 35, 60, .2);
 
     transform:
         scale(.95)
@@ -1436,15 +1765,21 @@ button {
 
     place-items: center;
 
-    margin: 0 auto 14px;
+    margin:
+        0 auto 14px;
 
     border-radius: 50%;
 
-    background: #dcfce7;
+    background:
+        linear-gradient(
+            135deg,
+            #dcfce7,
+            #d1fae5
+        );
 
     color: #16a34a;
 
-    font-size: 32px;
+    font-size: 30px;
 
     font-weight: 900;
 }
@@ -1461,11 +1796,11 @@ button {
 
     color: #16a34a;
 
-    font-size: 9px;
+    font-size: 8px;
 
     font-weight: 900;
 
-    letter-spacing: .1em;
+    letter-spacing: .11em;
 
     margin-bottom: 9px;
 }
@@ -1473,7 +1808,7 @@ button {
 .modal-content h2 {
     color: #173b68;
 
-    font-size: 23px;
+    font-size: 22px;
 
     margin-bottom: 9px;
 }
@@ -1481,9 +1816,9 @@ button {
 .modal-content p {
     color: #64748b;
 
-    font-size: 13px;
+    font-size: 12px;
 
-    line-height: 1.6;
+    line-height: 1.7;
 
     margin-bottom: 22px;
 }
@@ -1493,9 +1828,9 @@ button {
 }
 
 
-/* ================================
+/* =========================================================
    TOAST
-================================ */
+========================================================= */
 
 .toast {
     position: fixed;
@@ -1514,18 +1849,24 @@ button {
 
     gap: 11px;
 
-    padding: 14px 15px;
+    padding:
+        14px 15px;
 
     border-radius: 16px;
 
     background:
-        rgba(255,255,255,.96);
+        rgba(255, 255, 255, .96);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, .9);
 
     box-shadow:
         0 20px 55px
-        rgba(15,35,60,.16);
+        rgba(15, 35, 60, .16);
 
-    transform: translateY(25px);
+    transform:
+        translateY(25px);
 
     opacity: 0;
 
@@ -1539,7 +1880,8 @@ button {
 
     visibility: visible;
 
-    transform: translateY(0);
+    transform:
+        translateY(0);
 }
 
 .toast-icon {
@@ -1549,6 +1891,8 @@ button {
     display: grid;
 
     place-items: center;
+
+    flex-shrink: 0;
 
     border-radius: 10px;
 
@@ -1580,13 +1924,15 @@ button {
 .toast-content strong {
     color: #173b68;
 
-    font-size: 12px;
+    font-size: 11px;
 }
 
 .toast-content span {
     color: #7890a8;
 
-    font-size: 11px;
+    font-size: 10px;
+
+    line-height: 1.4;
 }
 
 .toast > button {
@@ -1600,9 +1946,24 @@ button {
 }
 
 
-/* ================================
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline:
+        3px solid
+        rgba(59, 130, 246, .25);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
    RESPONSIVE
-================================ */
+========================================================= */
 
 @media (max-width: 800px) {
 
@@ -1614,17 +1975,40 @@ button {
     .directory-top {
         align-items: flex-start;
     }
+
+    .directory-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .directory-tools {
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        flex-basis: 100%;
+    }
+
+    .sort-control {
+        flex: 1;
+    }
+
+    .refresh-button {
+        flex: 1;
+        justify-content: center;
+    }
 }
+
 
 @media (max-width: 600px) {
 
     .container,
     .nav-container {
-        width: calc(100% - 22px);
+        width:
+            calc(100% - 22px);
     }
 
     .nav-container {
-        min-height: 70px;
+        min-height: 68px;
     }
 
     .brand-text span {
@@ -1634,12 +2018,14 @@ button {
     .brand-icon {
         width: 40px;
         height: 40px;
+        border-radius: 13px;
     }
 
     .nav-link {
-        padding: 9px 10px;
+        padding:
+            9px 10px;
 
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .nav-link span {
@@ -1648,17 +2034,21 @@ button {
 
     .page-section {
         padding:
-            42px 0 60px;
+            40px 0 60px;
+    }
+
+    .hero {
+        margin-bottom: 35px;
+    }
+
+    .hero h1 {
+        font-size: 40px;
     }
 
     .form-section {
         padding: 21px;
 
         border-radius: 19px;
-    }
-
-    .hero h1 {
-        font-size: 39px;
     }
 
     .directory-top {
@@ -1669,18 +2059,19 @@ button {
         width: 100%;
     }
 
-    .directory-tools {
-        flex-direction: column;
+    .sort-control,
+    .refresh-button {
+        width: 100%;
+        flex: none;
     }
 
-    .refresh-button {
-        justify-content: center;
+    .student-card {
+        padding: 20px;
     }
 
     .toast {
         right: 11px;
         bottom: 11px;
-
         width:
             calc(100% - 22px);
     }
@@ -1688,5 +2079,23 @@ button {
     .modal-content {
         padding:
             30px 22px;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+
+        transition: none !important;
+
+        scroll-behavior: auto !important;
     }
 }
